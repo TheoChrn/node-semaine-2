@@ -1,0 +1,20 @@
+{
+  "name": "node-semaine-2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "server": "nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/express": "^5.0.2",
+    "express": "^5.1.0",
+    "nodemon": "^3.1.10",
+    "typescript": "^5.8.3"
+  }
+}
