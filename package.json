@@ -2,10 +2,11 @@
   "name": "node-semaine-2",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "type": "module",
   "scripts": {
-    "server": "nodemon server.js",
+    "server": "node dist/server.js",
+    "dev": "concurrently \"tsc --watch\" \"tsnd --respawn src/server.ts\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -13,8 +14,15 @@
   "license": "ISC",
   "devDependencies": {
     "@types/express": "^5.0.2",
+    "@types/node": "^22.15.29",
+    "concurrently": "^9.1.2",
     "express": "^5.1.0",
     "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "dotenv": "^16.5.0"
   }
 }
