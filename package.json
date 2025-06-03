@@ -1,28 +1,17 @@
 {
-  "name": "node-semaine-2",
+  "name": "monorepo-root",
+  "private": true,
   "version": "1.0.0",
-  "description": "",
-  "main": "index.ts",
-  "type": "module",
   "scripts": {
-    "server": "node dist/server.js",
-    "dev": "concurrently \"tsc --watch\" \"tsnd --respawn src/server.ts\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@types/express": "^5.0.2",
-    "@types/node": "^22.15.29",
-    "concurrently": "^9.1.2",
-    "express": "^5.1.0",
-    "nodemon": "^3.1.10",
-    "ts-node": "^10.9.2",
-    "ts-node-dev": "^2.0.0",
-    "typescript": "^5.8.3"
-  },
-  "dependencies": {
-    "dotenv": "^16.5.0"
+    "dev": "pnpm --filter frontend run dev",
+    "build": "pnpm --filter frontend run build",
+    "lint": "pnpm --filter frontend run lint",
+    "preview": "pnpm --filter frontend run preview",
+    "backend:build": "pnpm --filter backend run build",
+    "backend:start": "pnpm --filter backend run start",
+    "backend:dev": "pnpm --filter backend run dev",
+    "generate": "pnpm --filter backend run generate",
+    "migrate": "pnpm --filter backend run migrate",
+    "studio": "pnpm --filter backend run studio"
   }
 }

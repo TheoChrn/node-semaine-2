@@ -1,9 +1,9 @@
+import { getAllComments } from "@/controllers/index";
 import { Router } from "express";
-import { postController } from "../controllers";
 
-const router = Router();
+const router: Router = Router();
 
-router.get("/", postController.getAllPosts);
+router.get("/", getAllComments);
 
 router.get("/:id", (req, res) => {});
 
