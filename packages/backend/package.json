@@ -8,9 +8,9 @@
     "build": "tsup src --format esm --dts",
     "start": "node dist/server.js",
     "dev": "tsx watch src/server.ts",
-    "generate": "",
-    "migrate": "",
-    "studio": ""
+    "generate": "drizzle-kit generate --config=src/db/config/drizzle.ts",
+    "migrate": "tsx src/db/config/migrate.ts",
+    "studio": "drizzle-kit studio --config=src/db/config/drizzle.ts"
   },
   "keywords": [],
   "author": "",

@@ -1,3 +1,5 @@
+import { comments } from "db/schemas/comments";
+import { posts } from "db/schemas/posts";
 import { relations } from "drizzle-orm";
 import { pgTable, uuid, varchar, timestamp } from "drizzle-orm/pg-core";
 
@@ -8,6 +10,11 @@ export const users = pgTable("users", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
-export const userRelations = relations(users, ({ many }) => ({
-  posts: many(users),
+export const usersRelations = relations(users, ({ many }) => ({
+  posts: many(posts, {
+    relationName: "user_posts",
+  }),
+  comments: many(comments, {
+    relationName: "user_comments",
+  }),
 }));

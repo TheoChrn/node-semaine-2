@@ -1,6 +1,5 @@
 import express from "express";
 import cors from "cors";
-import "dotenv/config";
 import { env } from "@/config/env";
 import { requestLogger } from "@/middlewares/requestLogger";
 import router from "@/routes/index";

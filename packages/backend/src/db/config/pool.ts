@@ -1,5 +1,5 @@
 import { env } from "@/config/env";
-import "dotenv/config";
+
 import { Pool } from "pg";
 import { drizzle, NodePgDatabase } from "drizzle-orm/node-postgres";
 
