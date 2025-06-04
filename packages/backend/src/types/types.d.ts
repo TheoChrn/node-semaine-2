@@ -5,7 +5,11 @@ export {};
 declare global {
   interface User extends BaseUser {}
 
-  interface CreateUser extends Pick<User, "userName" | "email" | "password"> {}
+  interface CreateUser
+    extends Pick<
+      User,
+      "userName" | "email" | "password" | "firstName" | "lastName"
+    > {}
   interface UpdateUser extends CreateUser, Pick<User, "id"> {}
 
   interface EnvConfig {

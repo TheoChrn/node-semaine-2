@@ -1,12 +1,13 @@
 import { db } from "@/db/config/pool";
-import {
-  createUserSchema,
-  updateUserSchema,
-} from "../../../shared/src/validators";
+
 import { logger } from "@/utils/logger";
 
 import { schema } from "@/db/schemas";
 import { eq } from "drizzle-orm";
+import {
+  createUserSchema,
+  updateUserSchema,
+} from "@monorepo/shared/src/validators";
 
 export const user = {
   create: async (input: CreateUser) => {

@@ -1,11 +1,9 @@
 import { db } from "@/db/config/pool";
 import type { NewPost, Post } from "@/db/entities/posts";
 import { schema } from "@/db/schemas";
-import {
-  createPostSchema,
-  updatePostSchema,
-} from "../../../shared/src/validators";
+
 import { logger } from "@/utils/logger";
+import { createPostSchema, updatePostSchema } from "@monorepo/shared/src/validators";
 
 import { eq } from "drizzle-orm";
 

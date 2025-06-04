@@ -71,7 +71,7 @@ export const auth = {
   },
   register: async (request: Request, response: Response) => {
     try {
-      const { userName, email, password } = request.body;
+      const { userName, email, password, firstName, lastName } = request.body;
       const validation = createUserSchema.safeParse(request.body);
 
       if (!validation.success) {
@@ -90,6 +90,8 @@ export const auth = {
 
       const newUser = await models.user.create({
         userName,
+        firstName,
+        lastName,
         email,
         password: hashedPassword,
       });

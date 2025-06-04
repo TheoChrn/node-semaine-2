@@ -3,6 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "type": "module",
+  "main": "./src/validators/index.ts",
+  "scripts": {
+    "build": "tsup src/validators/index.ts --format esm --dts --clean"
+  },
+  "exports": {
+    "./src/validators": "./dist/index.js"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

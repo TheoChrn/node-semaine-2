@@ -1,11 +1,11 @@
 {
   "extends": "@total-typescript/tsconfig/bundler/dom/app",
   "compilerOptions": {
-    "typeRoots": ["./node_modules/@types"],
     "baseUrl": ".",
-    "outDir": "dist"
+    "outDir": "./dist",
+    "rootDir": "./src"
   },
 
-  "include": ["src"],
+  "include": ["src/**/*.ts"],
   "exclude": ["dist", "packages/**/dist", "node_modules"]
 }

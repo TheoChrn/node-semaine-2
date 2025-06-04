@@ -5,7 +5,7 @@ import { schema } from "@/db/schemas";
 
 import { logger } from "@/utils/logger";
 import { db } from "@/db/config/pool";
-import { createCommentSchema } from "../../../shared/src/validators";
+import { createCommentSchema } from "@monorepo/shared/src/validators";
 
 export const comment = {
   create: async (input: NewComment) => {
