@@ -1,9 +1,11 @@
+import { env } from "@/config/env";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { migrate } from "drizzle-orm/node-postgres/migrator";
 import { Pool } from "pg";
-import { env } from "process";
 
-const { DATABASE_URL } = env;
+const { DATABASE_URL, NODE_ENV } = env;
+
+console.log(NODE_ENV + " " + DATABASE_URL);
 
 async function main() {
   const pool = new Pool({ connectionString: DATABASE_URL });

@@ -14,7 +14,9 @@ export const userRolesValues = {
 
 export const users = pgTable("users", {
   id: uuid("id").defaultRandom().primaryKey(),
-  userName: varchar("username", { length: 255 }).notNull().unique(),
+  userName: varchar("user_name", { length: 255 }).notNull().unique(),
+  firstName: varchar("first_name", { length: 255 }).notNull(),
+  lastName: varchar("last_name", { length: 255 }).notNull(),
   password: varchar("password", { length: 255 }).notNull(),
   email: varchar("email", { length: 255 }).notNull().unique(),
   role: text({ enum: userRole }).notNull().default("user"),

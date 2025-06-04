@@ -9,7 +9,8 @@
     "build": "tsup src --format esm --dts --clean --tsconfig tsconfig.json",
     "dev": "tsx --watch ./src/index.ts",
     "generate": "drizzle-kit generate --config=src/db/config/drizzle.ts",
-    "migrate": "tsx src/db/config/migrate.ts",
+    "migrate:dev": "NODE_ENV=development tsx src/db/config/migrate.ts",
+    "migrate:prod": "NODE_ENV=production tsx src/db/config/migrate.ts",
     "studio": "drizzle-kit studio --config=src/db/config/drizzle.ts"
   },
   "keywords": [],
@@ -22,6 +23,7 @@
     "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.15.29",
     "@types/pg": "^8.15.4",
+    "dotenv-cli": "^8.0.0",
     "drizzle-kit": "^0.31.1",
     "tsc-alias": "^1.8.16",
     "tsup": "^8.5.0",
