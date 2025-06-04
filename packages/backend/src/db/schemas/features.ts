@@ -1,24 +1,27 @@
 import { relations } from "drizzle-orm";
 import { pgTable, uuid, varchar, text, timestamp } from "drizzle-orm/pg-core";
-import { comments } from "../schemas/comments";
-import { users } from "../schemas/users";
 
-export const posts = pgTable("posts", {
+import { users } from "../schemas/users";
+import { comments } from "@/db/schemas/comments";
+
+export const features = pgTable("features", {
   id: uuid("id").defaultRandom().primaryKey(),
   title: varchar("title", { length: 255 }).notNull(),
-  content: text("content").notNull(),
-  authorId: uuid("author_id")
+  description: text("description").notNull(),
+  createdBy: uuid("created_by")
     .references(() => users.id, { onDelete: "cascade" })
     .notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
-export const postRelation = relations(posts, ({ one, many }) => ({
+export const featuresRelation = relations(features, ({ one, many }) => ({
   user: one(users, {
-    fields: [posts.authorId],
+    fields: [features.createdBy],
     references: [users.id],
-    relationName: "user_posts",
+    relationName: "user_id",
   }),
-  comments: many(comments, { relationName: "post_comments" }),
+  comments: many(comments, {
+    relationName: "comments",
+  }),
 }));

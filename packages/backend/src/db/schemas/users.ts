@@ -1,5 +1,5 @@
+import type { features } from "@/db/schemas/features";
 import { comments } from "../schemas/comments";
-import { posts } from "../schemas/posts";
 import { relations } from "drizzle-orm";
 import { pgTable, uuid, varchar, timestamp, text } from "drizzle-orm/pg-core";
 
@@ -25,10 +25,10 @@ export const users = pgTable("users", {
 });
 
 export const usersRelations = relations(users, ({ many }) => ({
-  posts: many(posts, {
-    relationName: "user_posts",
-  }),
   comments: many(comments, {
-    relationName: "user_comments",
+    relationName: "comments",
+  }),
+  features: many(comments, {
+    relationName: "features",
   }),
 }));

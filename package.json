@@ -3,20 +3,21 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "dev": "pnpm --filter frontend run dev",
     "build": "pnpm --filter frontend run build",
     "lint": "pnpm --filter frontend run lint",
     "preview": "pnpm --filter frontend run preview",
     "backend:build": "pnpm --filter @monorepo/backend run build",
     "render:build": "pnpm --filter @monorepo/shared... run build && pnpm --filter @monorepo/backend... run build",
     "backend:start": "pnpm --filter @monorepo/backend run start",
-    "backend:dev": "pnpm --filter @monorepo/backend run dev",
     "generate": "pnpm --filter @monorepo/backend run generate",
-    "migrate": "pnpm --filter @monorepo/backend run migrate",
-    "studio": "pnpm --filter @monorepo/backend run studio"
+    "migrate:dev": "pnpm --filter @monorepo/backend run migrate:dev",
+    "migrate:prod": "pnpm --filter @monorepo/backend run migrate:prod",
+    "studio": "pnpm --filter @monorepo/backend run studio",
+    "dev": "concurrently \"pnpm --filter frontend run dev\" \"pnpm --filter @monorepo/backend run dev\""
   },
   "devDependencies": {
     "@total-typescript/tsconfig": "^1.0.4",
+    "concurrently": "^9.1.2",
     "tsup": "^8.5.0"
   }
 }

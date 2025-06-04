@@ -1,14 +1,15 @@
 import { relations } from "drizzle-orm";
 import { pgTable, uuid, varchar, text, timestamp } from "drizzle-orm/pg-core";
-import { posts } from "../schemas/posts";
 import { users } from "../schemas/users";
+import { features } from "@/db/schemas/features";
 
 export const comments = pgTable("comments", {
   id: uuid("id").defaultRandom().primaryKey(),
   title: varchar("title", { length: 255 }).notNull(),
   content: text("content").notNull(),
-  postId: uuid("post_id")
-    .references(() => posts.id, { onDelete: "cascade" })
+  parentId: uuid("parent_id"),
+  featureId: uuid("feature")
+    .references(() => features.id, { onDelete: "cascade" })
     .notNull(),
   authorId: uuid("author_id")
     .references(() => users.id, { onDelete: "cascade" })
@@ -21,12 +22,16 @@ export const commentRelations = relations(comments, ({ one }) => ({
   user: one(users, {
     fields: [comments.authorId],
     references: [users.id],
-    relationName: "user_comments",
+    relationName: "user_id",
   }),
-
-  post: one(posts, {
-    fields: [comments.postId],
-    references: [posts.id],
-    relationName: "post_comments",
+  features: one(features, {
+    fields: [comments.featureId],
+    references: [features.id],
+    relationName: "feature_id",
+  }),
+  parent: one(comments, {
+    fields: [comments.parentId],
+    references: [comments.id],
+    relationName: "parent_id",
   }),
 }));
