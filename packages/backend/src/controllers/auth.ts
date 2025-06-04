@@ -8,6 +8,10 @@ import { APIResponse } from "@/utils/response";
 
 import { models } from "@/models";
 import { logger } from "@/utils/logger";
+import {
+  createUserSchema,
+  loginUserSchema,
+} from "@monorepo/shared/src/validators";
 
 const { JWT_SECRET, NODE_ENV } = env;
 
@@ -76,8 +80,6 @@ export const auth = {
       }
 
       const existingUser = await models.user.getByEmail({ email });
-
-      console.log(existingUser);
 
       if (existingUser) {
         APIResponse(response, null, "Cet email est déjà utilisé !", 401);

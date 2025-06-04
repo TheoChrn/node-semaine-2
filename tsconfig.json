@@ -1,7 +1,7 @@
 {
   "extends": "@total-typescript/tsconfig/bundler/dom/app",
   "compilerOptions": {
-    // "typeRoots": ["./node_modules/@types"],
+    "typeRoots": ["./node_modules/@types"],
     "baseUrl": "./",
     "paths": {
       "@monorepo/shared": ["packages/shared/src"]

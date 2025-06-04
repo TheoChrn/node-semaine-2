@@ -8,7 +8,7 @@ export default defineConfig({
   esbuildOptions(options) {
     options.loader = {
       ...options.loader,
-      ".sql": "text", // Charge les .sql comme du texte
+      ".sql": "text",
     };
   },
 });

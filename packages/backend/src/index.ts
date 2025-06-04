@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import { env } from "@/config/env";
 import { requestLogger } from "@/middlewares/requestLogger";
+import router from "@/routes";
 
 const app = express();
 

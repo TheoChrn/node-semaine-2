@@ -2,7 +2,7 @@ import type { Request, Response } from "express";
 import { APIResponse } from "@/utils/response";
 import { logger } from "@/utils/logger";
 import { models } from "@/models/index";
-import type { UpdateComment } from "@/db/entities//comments";
+import type { UpdateComment } from "@/db/entities/comments";
 
 export const comment = {
   get: async (request: Request, response: Response) => {

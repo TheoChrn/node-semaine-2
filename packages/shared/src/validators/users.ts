@@ -6,7 +6,10 @@ export const createUserSchema = z.object({
   email: z.string().email("An email is required"),
 });
 
-export const loginUserSchema = createUserSchema.shape.email;
+export const loginUserSchema = createUserSchema.omit({
+  userName: true,
+  password: true,
+});
 
 export const updateUserSchema = createUserSchema.extend({
   id: z.string(),
