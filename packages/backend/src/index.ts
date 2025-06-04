@@ -3,6 +3,7 @@ import cors from "cors";
 import { env } from "@/config/env";
 import { requestLogger } from "@/middlewares/requestLogger";
 import router from "@/routes";
+import cookieParser from "cookie-parser";
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(
 );
 
 app.use(express.json());
+app.use(cookieParser());
 
 app.use(requestLogger);
 app.use("/", router);

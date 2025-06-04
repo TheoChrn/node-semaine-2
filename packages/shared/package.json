@@ -5,10 +5,11 @@
   "type": "module",
   "main": "./src/validators/index.ts",
   "scripts": {
-    "build": "tsup src --format esm --dts --clean"
+    "build": "tsup src --format esm --dts --clean",
+    "dev": "tsx --watch ./src/index.ts"
   },
   "exports": {
-    "./src/validators": "./dist/index.js"
+    "./src/validators": "./src/index.ts"
   },
   "keywords": [],
   "author": "",

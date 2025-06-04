@@ -18,20 +18,21 @@ export const comments = pgTable("comments", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
-export const commentRelations = relations(comments, ({ one }) => ({
+export const commentRelations = relations(comments, ({ one, many }) => ({
   user: one(users, {
     fields: [comments.authorId],
     references: [users.id],
-    relationName: "user_id",
+    relationName: "replies",
   }),
-  features: one(features, {
+  feature: one(features, {
     fields: [comments.featureId],
     references: [features.id],
-    relationName: "feature_id",
   }),
   parent: one(comments, {
     fields: [comments.parentId],
     references: [comments.id],
-    relationName: "parent_id",
+  }),
+  replies: many(comments, {
+    relationName: "replies",
   }),
 }));

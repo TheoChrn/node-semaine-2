@@ -1,9 +1,9 @@
-import * as postControllers from "./posts";
 import * as commentControllers from "./comments";
 import * as authControllers from "./auth";
+import * as featureControllers from "./features";
 
 export const controllers = {
-  ...postControllers,
   ...commentControllers,
   ...authControllers,
+  ...featureControllers,
 };

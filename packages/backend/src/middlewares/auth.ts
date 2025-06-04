@@ -12,7 +12,12 @@ export const isAuthenticated = (
 ) => {
   const { accessToken } = request.cookies;
   if (!accessToken) {
-    APIResponse(response, null, "Vous devez être connecté", 401);
+    APIResponse({
+      response,
+      data: {},
+      message: "Vous devez être connecté",
+      status: 401,
+    });
     return;
   }
 
@@ -21,6 +26,6 @@ export const isAuthenticated = (
     response.locals.user = decoded;
     next();
   } catch (err: any) {
-    APIResponse(response, null, "Token invalide", 401);
+    APIResponse({ response, data: {}, message: "Token invalide", status: 401 });
   }
 };

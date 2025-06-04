@@ -19,9 +19,6 @@ export const featuresRelation = relations(features, ({ one, many }) => ({
   user: one(users, {
     fields: [features.createdBy],
     references: [users.id],
-    relationName: "user_id",
   }),
-  comments: many(comments, {
-    relationName: "comments",
-  }),
+  comments: many(comments),
 }));

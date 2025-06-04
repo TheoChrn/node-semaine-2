@@ -53,6 +53,9 @@ importers:
       winston:
         specifier: ^3.17.0
         version: 3.17.0
+      zod:
+        specifier: ^3.25.49
+        version: 3.25.50
     devDependencies:
       '@types/cookie-parser':
         specifier: ^1.4.8

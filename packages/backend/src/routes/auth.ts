@@ -1,4 +1,5 @@
 import { controllers } from "@/controllers/index";
+import { middlewares } from "@/middlewares";
 import express, { Router } from "express";
 
 const router: Router = express.Router();

@@ -19,32 +19,37 @@ export const auth = {
   login: async (request: Request, response: Response) => {
     try {
       const { email, password } = request.body;
-      const validation = loginUserSchema.safeParse(email);
+      const validation = loginUserSchema.safeParse({ email });
       if (!validation.success) {
-        APIResponse(response, null, validation.error.message, 401);
+        APIResponse({
+          response,
+          message: validation.error.message,
+          status: 401,
+        });
         return;
       }
 
-      const user = await models.user.getByEmail(email);
+      const user = await models.user.getByEmail({ email });
 
       if (!user) {
-        APIResponse(
+        APIResponse({
           response,
-          null,
-          "L'email ou le mot de passe saisi est incorrecte",
-          401
-        );
+          message: "L'email ou le mot de passe saisi est incorrecte",
+          status: 401,
+        });
         return;
       }
+
       const isPasswordValid = await argon2.verify(user.password, password);
 
+      console.log(isPasswordValid);
+
       if (!isPasswordValid) {
-        APIResponse(
+        APIResponse({
           response,
-          null,
-          "L'email ou le mot de passe saisi est incorrecte",
-          401
-        );
+          message: "L'email ou le mot de passe saisi est incorrecte",
+          status: 401,
+        });
         return;
       }
 
@@ -61,37 +66,46 @@ export const auth = {
         sameSite: "strict",
         secure: NODE_ENV === "production",
       });
-      APIResponse(response, null, "Vous êtes bien connecté", 200);
+
+      APIResponse({ response,  message: "Vous êtes bien connecté" });
     } catch (err: any) {
       logger.error(
         `Erreur lors de la connexion de l'utilisateur: ${err.message}`
       );
-      APIResponse(response, null, "Erreur serveur", 500);
+      APIResponse({ response, status: 500 });
     }
   },
   register: async (request: Request, response: Response) => {
     try {
-      const { userName, email, password, firstName, lastName } = request.body;
+      const { email, password } = request.body;
+
+      console.log(request.body);
+
       const validation = createUserSchema.safeParse(request.body);
 
       if (!validation.success) {
-        APIResponse(response, null, validation.error.message, 401);
+        APIResponse({
+          response,
+          message: validation.error.message,
+          status: 401,
+        });
         return;
       }
 
       const existingUser = await models.user.getByEmail({ email });
 
       if (existingUser) {
-        APIResponse(response, null, "Cet email est déjà utilisé !", 401);
+        APIResponse({
+          response,
+          message: "Cet email est déjà utilisé !",
+          status: 401,
+        });
         return;
       }
 
       const hashedPassword = await argon2.hash(password);
 
       const newUser = await models.user.create({
-        userName,
-        firstName,
-        lastName,
         email,
         password: hashedPassword,
       });
@@ -105,16 +119,20 @@ export const auth = {
         sameSite: "strict",
         secure: NODE_ENV === "production",
       });
-      APIResponse(response, null, "Vous êtes bien connecté", 200);
+      APIResponse({ response,  message: "Vous êtes bien connecté" });
     } catch (err: any) {
       logger.error(
         `Erreur lors de la création de l'utilisateur: ${err.message}`
       );
-      APIResponse(response, null, "Erreur serveur", 500);
+      APIResponse({
+        response,
+        message: "Erreur serveur",
+        status: 500,
+      });
     }
   },
-  logout: async (request: Request, response: Response) => {
+  logout: async (_: Request, response: Response) => {
     response.clearCookie("accessToken");
-    APIResponse(response, null, "Vous êtes déconnecté", 200);
+    APIResponse({ response,  message: "Vous êtes déconnecté" });
   },
 };

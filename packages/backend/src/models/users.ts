@@ -30,11 +30,17 @@ export const user = {
     }
   },
   getByEmail: async (input: { email: string }) => {
+    console.log(`input: ${input}`);
+
     try {
-      return db.query.users.findFirst({
+      const user = await db.query.users.findFirst({
         columns: { id: true, password: true, role: true },
         where: (user, { eq }) => eq(user.email, input.email),
       });
+
+      console.log(user);
+
+      return user;
     } catch (error) {
       logger.error(
         `Impossible de créer le user: ${
@@ -74,7 +80,7 @@ export const user = {
   get: async (input: { id: string }) => {
     try {
       return db.query.users.findFirst({
-        columns: { userName: true, password: true },
+        columns: { email: true, password: true },
         where: (comment, { eq }) => eq(comment.id, input.id),
       });
     } catch (error) {
@@ -89,7 +95,7 @@ export const user = {
     try {
       return db.query.users.findMany({
         columns: {
-          userName: true,
+          email: true,
           password: true,
         },
       });
