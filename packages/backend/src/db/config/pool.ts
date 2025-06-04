@@ -1,9 +1,8 @@
-import { env } from "@/config/env";
-
 import { Pool } from "pg";
 import { drizzle, NodePgDatabase } from "drizzle-orm/node-postgres";
 
-import * as schema from "../schemas";
+import { env } from "process";
+import { schema } from "@/db/schemas";
 
 const { DATABASE_URL } = env;
 

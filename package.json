@@ -7,11 +7,14 @@
     "build": "pnpm --filter frontend run build",
     "lint": "pnpm --filter frontend run lint",
     "preview": "pnpm --filter frontend run preview",
-    "backend:build": "pnpm --filter backend run build",
-    "backend:start": "pnpm --filter backend run start",
-    "backend:dev": "pnpm --filter backend run dev",
-    "generate": "pnpm --filter backend run generate",
-    "migrate": "pnpm --filter backend run migrate",
-    "studio": "pnpm --filter backend run studio"
+    "backend:build": "pnpm --filter @monorepo/backend run build",
+    "backend:start": "pnpm --filter @monorepo/backend run start",
+    "backend:dev": "pnpm --filter @monorepo/backend run dev",
+    "generate": "pnpm --filter @monorepo/backend run generate",
+    "migrate": "pnpm --filter @monorepo/backend run migrate",
+    "studio": "pnpm --filter @monorepo/backend run studio"
+  },
+  "devDependencies": {
+    "@total-typescript/tsconfig": "^1.0.4"
   }
 }

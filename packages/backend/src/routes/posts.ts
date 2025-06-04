@@ -1,9 +1,9 @@
-import { getAllPosts } from "@/controllers/index";
+import { controllers } from "@/controllers/index";
 import { Router } from "express";
 
 const router: Router = Router();
 
-router.get("/", getAllPosts);
+router.get("/", controllers.post.getAllPosts);
 
 router.get("/:id", (req, res) => {});
 

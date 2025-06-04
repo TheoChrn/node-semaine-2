@@ -1,0 +1,12 @@
+{
+  "name": "@monorepo/shared",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "zod": "^3.25.49"
+  }
+}

@@ -1,14 +1,15 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "@total-typescript/tsconfig/bundler/dom",
   "compilerOptions": {
-    "moduleResolution": "nodenext",
-    "module": "nodenext",
-    "target": "es2020",
-    "esModuleInterop": true
+    "noErrorTruncation": true,
+    "jsx": "preserve",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "incremental": true,
+    "checkJs": true
   },
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ]
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules", "dist"]
 }

@@ -1,26 +1,19 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": ["@total-typescript/tsconfig/bundler/dom", "../../tsconfig.json"],
   "compilerOptions": {
-    "outDir": "dist",
-    "rootDir": "src",
-    "composite": true,
+    "baseUrl": "./",
+    "module": "esnext",
+    "target": "ES2020",
+    "moduleResolution": "node",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "baseUrl": "src",
+    "resolveJsonModule": true,
+    "allowImportingTsExtensions": true,
+    "lib": ["DOM", "ES2015"],
     "paths": {
-      "@/utils/*": ["utils/*"],
-      "@/config/*": ["config/*"],
-      "@/controllers/*": ["controllers/*"],
-      "@/middlewares/*": ["middlewares/*"],
-      "@/models/*": ["models/*"],
-      "@/routes/*": ["routes/*"]
-    },
-    "typeRoots": ["./node_modules/@types", "./src/types"]
+      "@/*": ["./src/*"],
+      "@monorepo/shared": ["../../shared/src"]
+    }
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["node_modules", "back/dist"],
-  "ts-node": {
-    "esm": true
-  },
-  "references": []
+  "include": ["src/**/*.ts"]
 }

@@ -1,7 +1,7 @@
-import { env } from "@/config/env";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { migrate } from "drizzle-orm/node-postgres/migrator";
 import { Pool } from "pg";
+import { env } from "process";
 
 const { DATABASE_URL } = env;
 

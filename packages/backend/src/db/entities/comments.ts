@@ -1,5 +1,6 @@
-import { comments } from "db/schemas";
-import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import type { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import type { schema } from "@/db//schemas";
 
-export type Comment = InferSelectModel<typeof comments>;
-export type NewComment = InferInsertModel<typeof comments>;
+export type Comment = InferSelectModel<typeof schema.comments>;
+export type UpdateComment = Omit<Comment, "updatedAt" | "createdAt">;
+export type NewComment = InferInsertModel<typeof schema.comments>;

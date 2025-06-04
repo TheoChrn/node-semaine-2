@@ -1,0 +1,103 @@
+import { db } from "@/db/config/pool";
+import {
+  createUserSchema,
+  updateUserSchema,
+} from "../../../shared/src/validators";
+import { logger } from "@/utils/logger";
+
+import { schema } from "@/db/schemas";
+import { eq } from "drizzle-orm";
+
+export const user = {
+  create: async (input: CreateUser) => {
+    try {
+      const validation = createUserSchema.safeParse(input);
+
+      if (!validation.success) return;
+
+      return db
+        .insert(schema.users)
+        .values(input)
+        .returning({ id: schema.users.id })
+        .then((rows) => rows[0]!);
+    } catch (error) {
+      logger.error(
+        `Impossible de créer le user: ${
+          error instanceof Error ? error.message : "Something went wrong"
+        }`
+      );
+    }
+  },
+  getByEmail: async (input: { email: string }) => {
+    try {
+      return db.query.users.findFirst({
+        columns: { id: true, password: true, role: true },
+        where: (user, { eq }) => eq(user.email, input.email),
+      });
+    } catch (error) {
+      logger.error(
+        `Impossible de créer le user: ${
+          error instanceof Error ? error.message : "Something went wrong"
+        }`
+      );
+    }
+  },
+  delete: async (input: { id: string }) => {
+    try {
+      return db.delete(schema.users).where(eq(schema.users.id, input.id));
+    } catch (error) {
+      logger.error(
+        `Impossible de supprimer le user: ${
+          error instanceof Error ? error.message : "Something went wrong"
+        }`
+      );
+    }
+  },
+  update: async (input: User) => {
+    try {
+      const validation = updateUserSchema.safeParse(input);
+      if (!validation.success) return;
+
+      return db
+        .update(schema.users)
+        .set(input)
+        .where(eq(schema.users.id, input.id));
+    } catch (error) {
+      logger.error(
+        `Impossible de mettre à jour le user: ${
+          error instanceof Error ? error.message : "Something went wrong"
+        }`
+      );
+    }
+  },
+  get: async (input: { id: string }) => {
+    try {
+      return db.query.users.findFirst({
+        columns: { userName: true, password: true },
+        where: (comment, { eq }) => eq(comment.id, input.id),
+      });
+    } catch (error) {
+      logger.error(
+        `Impossible de récupérer le user: ${
+          error instanceof Error ? error.message : "Something went wrong"
+        }`
+      );
+    }
+  },
+  getAll: async () => {
+    try {
+      return db.query.users.findMany({
+        columns: {
+          userName: true,
+          password: true,
+        },
+      });
+    } catch (error) {
+      logger.error(
+        `Impossible de récupérer les user: ${
+          error instanceof Error ? error.message : "Something went wrong"
+        }`
+      );
+    }
+  },
+};
