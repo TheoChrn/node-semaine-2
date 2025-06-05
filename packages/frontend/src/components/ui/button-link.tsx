@@ -11,5 +11,5 @@ export const ButtonLink = ({
   variant = "link",
   ...props
 }: ButtonLinkProps) => (
-  <Link {...props} className={buttonVariants({ className, variant })} />
+  <Link {...props} className={buttonVariants({ variant, className })} />
 );

@@ -23,7 +23,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./"),
-      "@monorepo/shared": path.resolve(__dirname, "../shared/src"),
+      "@shared": path.resolve(__dirname, "../shared/src/"),
     },
   },
 });

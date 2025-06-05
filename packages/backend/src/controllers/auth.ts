@@ -123,7 +123,11 @@ export const auth = {
         sameSite: "strict",
         secure: NODE_ENV === "production",
       });
-      APIResponse({ response, message: "Vous êtes bien connecté" });
+      APIResponse({
+        response,
+        data: newUser,
+        message: "Vous êtes bien connecté",
+      });
     } catch (err: any) {
       logger.error(
         `Erreur lors de la création de l'utilisateur: ${err.message}`

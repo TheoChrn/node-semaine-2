@@ -19,6 +19,7 @@ import { Route as authenticatedAuthenticatedDashboardImport } from './routes/(au
 import { Route as authAuthRegisterImport } from './routes/(auth)/auth/register'
 import { Route as authAuthLoginImport } from './routes/(auth)/auth/login'
 import { Route as authenticatedAuthenticatedDashboardAddFeatureImport } from './routes/(authenticated)/_authenticated/dashboard.add-feature'
+import { Route as authenticatedAuthenticatedDashboardFeatureFeatureIdImport } from './routes/(authenticated)/_authenticated/dashboard.feature.$featureId'
 
 // Create Virtual Routes
 
@@ -67,6 +68,13 @@ const authenticatedAuthenticatedDashboardAddFeatureRoute =
   authenticatedAuthenticatedDashboardAddFeatureImport.update({
     id: '/add-feature',
     path: '/add-feature',
+    getParentRoute: () => authenticatedAuthenticatedDashboardRoute,
+  } as any)
+
+const authenticatedAuthenticatedDashboardFeatureFeatureIdRoute =
+  authenticatedAuthenticatedDashboardFeatureFeatureIdImport.update({
+    id: '/feature/$featureId',
+    path: '/feature/$featureId',
     getParentRoute: () => authenticatedAuthenticatedDashboardRoute,
   } as any)
 
@@ -123,6 +131,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authenticatedAuthenticatedDashboardAddFeatureImport
       parentRoute: typeof authenticatedAuthenticatedDashboardImport
     }
+    '/(authenticated)/_authenticated/dashboard/feature/$featureId': {
+      id: '/(authenticated)/_authenticated/dashboard/feature/$featureId'
+      path: '/feature/$featureId'
+      fullPath: '/dashboard/feature/$featureId'
+      preLoaderRoute: typeof authenticatedAuthenticatedDashboardFeatureFeatureIdImport
+      parentRoute: typeof authenticatedAuthenticatedDashboardImport
+    }
   }
 }
 
@@ -144,12 +159,15 @@ const authAuthRouteRouteWithChildren = authAuthRouteRoute._addFileChildren(
 
 interface authenticatedAuthenticatedDashboardRouteChildren {
   authenticatedAuthenticatedDashboardAddFeatureRoute: typeof authenticatedAuthenticatedDashboardAddFeatureRoute
+  authenticatedAuthenticatedDashboardFeatureFeatureIdRoute: typeof authenticatedAuthenticatedDashboardFeatureFeatureIdRoute
 }
 
 const authenticatedAuthenticatedDashboardRouteChildren: authenticatedAuthenticatedDashboardRouteChildren =
   {
     authenticatedAuthenticatedDashboardAddFeatureRoute:
       authenticatedAuthenticatedDashboardAddFeatureRoute,
+    authenticatedAuthenticatedDashboardFeatureFeatureIdRoute:
+      authenticatedAuthenticatedDashboardFeatureFeatureIdRoute,
   }
 
 const authenticatedAuthenticatedDashboardRouteWithChildren =
@@ -191,6 +209,7 @@ export interface FileRoutesByFullPath {
   '/auth/register': typeof authAuthRegisterRoute
   '/dashboard': typeof authenticatedAuthenticatedDashboardRouteWithChildren
   '/dashboard/add-feature': typeof authenticatedAuthenticatedDashboardAddFeatureRoute
+  '/dashboard/feature/$featureId': typeof authenticatedAuthenticatedDashboardFeatureFeatureIdRoute
 }
 
 export interface FileRoutesByTo {
@@ -200,6 +219,7 @@ export interface FileRoutesByTo {
   '/auth/register': typeof authAuthRegisterRoute
   '/dashboard': typeof authenticatedAuthenticatedDashboardRouteWithChildren
   '/dashboard/add-feature': typeof authenticatedAuthenticatedDashboardAddFeatureRoute
+  '/dashboard/feature/$featureId': typeof authenticatedAuthenticatedDashboardFeatureFeatureIdRoute
 }
 
 export interface FileRoutesById {
@@ -211,6 +231,7 @@ export interface FileRoutesById {
   '/(auth)/auth/register': typeof authAuthRegisterRoute
   '/(authenticated)/_authenticated/dashboard': typeof authenticatedAuthenticatedDashboardRouteWithChildren
   '/(authenticated)/_authenticated/dashboard/add-feature': typeof authenticatedAuthenticatedDashboardAddFeatureRoute
+  '/(authenticated)/_authenticated/dashboard/feature/$featureId': typeof authenticatedAuthenticatedDashboardFeatureFeatureIdRoute
 }
 
 export interface FileRouteTypes {
@@ -222,6 +243,7 @@ export interface FileRouteTypes {
     | '/auth/register'
     | '/dashboard'
     | '/dashboard/add-feature'
+    | '/dashboard/feature/$featureId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/auth'
@@ -230,6 +252,7 @@ export interface FileRouteTypes {
     | '/auth/register'
     | '/dashboard'
     | '/dashboard/add-feature'
+    | '/dashboard/feature/$featureId'
   id:
     | '__root__'
     | '/(auth)/auth'
@@ -239,6 +262,7 @@ export interface FileRouteTypes {
     | '/(auth)/auth/register'
     | '/(authenticated)/_authenticated/dashboard'
     | '/(authenticated)/_authenticated/dashboard/add-feature'
+    | '/(authenticated)/_authenticated/dashboard/feature/$featureId'
   fileRoutesById: FileRoutesById
 }
 
@@ -298,11 +322,16 @@ export const routeTree = rootRoute
       "filePath": "(authenticated)/_authenticated/dashboard.tsx",
       "parent": "/(authenticated)/_authenticated",
       "children": [
-        "/(authenticated)/_authenticated/dashboard/add-feature"
+        "/(authenticated)/_authenticated/dashboard/add-feature",
+        "/(authenticated)/_authenticated/dashboard/feature/$featureId"
       ]
     },
     "/(authenticated)/_authenticated/dashboard/add-feature": {
       "filePath": "(authenticated)/_authenticated/dashboard.add-feature.tsx",
+      "parent": "/(authenticated)/_authenticated/dashboard"
+    },
+    "/(authenticated)/_authenticated/dashboard/feature/$featureId": {
+      "filePath": "(authenticated)/_authenticated/dashboard.feature.$featureId.tsx",
       "parent": "/(authenticated)/_authenticated/dashboard"
     }
   }

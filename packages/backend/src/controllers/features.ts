@@ -14,6 +14,7 @@ export const feature = {
     logger.info("[GET] Récupérer une feature");
     try {
       const { id } = request.params;
+      const { user } = response.locals;
 
       const validation = validateIdSchema.safeParse(id);
 
@@ -26,7 +27,7 @@ export const feature = {
         return;
       }
 
-      const feature = await models.feature.get({ id: id! });
+      const feature = await models.feature.get({ id: id!, userId: user.id });
 
       if (!feature) {
         APIResponse({

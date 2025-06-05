@@ -2,6 +2,7 @@ import { features } from "@/db/schemas/features";
 import { comments } from "../schemas/comments";
 import { relations } from "drizzle-orm";
 import { pgTable, uuid, varchar, timestamp, text } from "drizzle-orm/pg-core";
+import { votes } from "@/db/schemas/votes";
 
 const userRole = ["user", "admin"] as const;
 export type UserRoleValues = typeof userRole;
@@ -26,4 +27,5 @@ export const users = pgTable("users", {
 export const usersRelations = relations(users, ({ many }) => ({
   comments: many(comments),
   features: many(features),
+  votes: many(votes),
 }));

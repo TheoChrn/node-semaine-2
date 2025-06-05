@@ -1,0 +1,1 @@
+ALTER TABLE "features" ADD COLUMN "status" text DEFAULT 'planned';

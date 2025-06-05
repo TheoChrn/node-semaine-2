@@ -1,0 +1,1 @@
+ALTER TABLE "features" ALTER COLUMN "status" SET NOT NULL;

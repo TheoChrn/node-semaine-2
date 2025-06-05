@@ -10,7 +10,6 @@ export const isAuthenticated = (
   response: Response,
   next: NextFunction
 ) => {
-  console.log(request.cookies.accessToken);
 
   const { accessToken } = request.cookies;
   if (!accessToken) {

@@ -1,20 +1,52 @@
 import { Input } from "@/src/components/ui/input";
 import { useForm } from "@tanstack/react-form";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { loginSchema } from "../../../../../shared/src/validators";
 
 import { Button } from "@/src/components/ui/button";
 import { Heading } from "@ariakit/react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const Route = createFileRoute("/(auth)/auth/register")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: async (credentials: { email: string; password: string }) => {
+      const res = await fetch(`/api/auth/register`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(credentials),
+      });
+
+      const data = await res.json();
+
+      return data.data;
+    },
+    onSuccess: async (data) => {
+      await queryClient.setQueryData(["currentUser"], data);
+
+      navigate({
+        to: "/dashboard",
+        replace: true,
+      });
+    },
+  });
+
   const form = useForm({
     defaultValues: {
       email: "",
       password: "",
+    },
+    onSubmit: ({ value }) => {
+      mutation.mutate(value);
     },
   });
 
@@ -40,6 +72,7 @@ function RouteComponent() {
                   <Input
                     id={field.name}
                     name={field.name}
+                    type="email"
                     value={field.state.value}
                     onBlur={field.handleBlur}
                     onChange={(e) => field.handleChange(e.target.value)}
@@ -51,13 +84,14 @@ function RouteComponent() {
         />
         <form.Field
           name="password"
-          validators={{ onChange: loginSchema.shape.email }}
+          validators={{ onChange: loginSchema.shape.password }}
           children={(field) => (
             <>
               <label htmlFor={field.name}>Mot de passe:</label>
               <Input
                 id={field.name}
                 name={field.name}
+                type="password"
                 value={field.state.value}
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}

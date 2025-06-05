@@ -47,7 +47,6 @@ function RouteComponent() {
       password: "",
     },
     onSubmit: ({ value }) => {
-      console.log(value);
       mutation.mutate(value);
     },
   });
@@ -118,9 +117,13 @@ function RouteComponent() {
               variant="outline"
               className="flex-1"
             >
-              {isSubmitting ? "..." : "Inscription"}
+              {isSubmitting || mutation.isPending ? "..." : "Inscription"}
             </ButtonLink>
-            <Button type="submit" disabled={!canSubmit} className="flex-1">
+            <Button
+              type="submit"
+              disabled={!canSubmit || mutation.isPending || mutation.isSuccess}
+              className="flex-1"
+            >
               {isSubmitting ? "..." : "Connexion"}
             </Button>
           </div>

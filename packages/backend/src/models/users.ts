@@ -19,7 +19,11 @@ export const user = {
       return db
         .insert(schema.users)
         .values(input)
-        .returning({ id: schema.users.id })
+        .returning({
+          id: schema.users.id,
+          email: schema.users.email,
+          role: schema.users.role,
+        })
         .then((rows) => rows[0]!);
     } catch (error) {
       logger.error(
@@ -35,8 +39,6 @@ export const user = {
         columns: { id: true, email: true, password: true, role: true },
         where: (user, { eq }) => eq(user.email, input.email),
       });
-
-      console.log(user);
 
       return user;
     } catch (error) {
@@ -92,7 +94,13 @@ export const user = {
   getSession: async (input: { id: string }) => {
     try {
       return db.query.users.findFirst({
-        columns: { email: true, role: true, firstName: true, lastName: true },
+        columns: {
+          id: true,
+          email: true,
+          role: true,
+          firstName: true,
+          lastName: true,
+        },
         where: (comment, { eq }) => eq(comment.id, input.id),
       });
     } catch (error) {

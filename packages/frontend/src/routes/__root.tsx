@@ -53,7 +53,6 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
       currentUserQueryOptions()
     );
 
-    console.log(context);
     context.auth = user;
 
     const isAuthenticated = !!user;
@@ -83,7 +82,6 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     };
   },
   loader: ({ context }) => {
-    console.log(context);
     return { auth: context.auth };
   },
   component: () => {
