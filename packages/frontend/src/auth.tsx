@@ -1,42 +1,21 @@
+import { currentUserQueryOptions } from "@/src/routes/__root";
 import { useQuery } from "@tanstack/react-query";
 import * as React from "react";
 
 export interface AuthContext {
   //   login: (email: string) => Promise<void>;
   //   logout: () => Promise<void>;
-  user?: {
+  user: {
+    id: string;
     email: string;
     role: "user" | "admin";
-    firstName?: string;
-    lastName?: string;
   };
 }
 
 const AuthContext = React.createContext<AuthContext | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const { data } = useQuery({
-    queryKey: ["auth"],
-    queryFn: async () => {
-      try {
-        const res = await fetch("http://localhost:3000/users", {
-          method: "GET",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-        const data = await res.json();
-
-        return data.data;
-      } catch (error) {
-        console.error("Fetch error:", error);
-        throw error;
-      }
-    },
-    retry: false,
-  });
+  const { data } = useQuery(currentUserQueryOptions());
 
   return (
     <AuthContext.Provider value={{ user: data }}>

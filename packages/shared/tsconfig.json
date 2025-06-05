@@ -1,11 +1,15 @@
 {
-  "extends": "@total-typescript/tsconfig/bundler/dom/app",
+  "extends": "@total-typescript/tsconfig/bundler",
   "compilerOptions": {
-    "baseUrl": ".",
-    "outDir": "./dist",
-    "rootDir": "./src"
+    "declaration": true,
+    "outDir": "dist",
+    "rootDir": "src",
+    "strict": true,
+    "moduleResolution": "node",
+    "target": "ES2022",
+    "module": "ESNext",
+    "esModuleInterop": true
   },
-
-  "include": ["src/**/*.ts"],
-  "exclude": ["dist", "packages/**/dist", "node_modules"]
+  "include": ["src/*"],
+  "exclude": ["dist", "node_modules"]
 }

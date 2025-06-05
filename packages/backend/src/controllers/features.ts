@@ -52,6 +52,26 @@ export const feature = {
       });
     }
   },
+  getAll: async (_: Request, response: Response) => {
+    logger.info("[GET] Récupérer toutes les features");
+    try {
+      const features = await models.feature.getAll();
+
+      APIResponse({
+        response,
+        data: features,
+      });
+    } catch (error: any) {
+      logger.error(
+        "Erreur lors de la récupération du feature: " + error.message
+      );
+      APIResponse({
+        response,
+        message: "Erreur lors de la récupération du feature",
+        status: 500,
+      });
+    }
+  },
   create: async (request: Request, response: Response) => {
     logger.info("[POST] Créer une feature");
     try {
@@ -150,7 +170,7 @@ export const feature = {
       }
 
       await models.feature.update(input);
-      
+
       APIResponse({
         response,
         message: "Feature mise à jour",

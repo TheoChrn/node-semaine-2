@@ -21,7 +21,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(requestLogger);
-app.use("/", router);
+app.use("/api", router);
 
 app.listen(PORT, () => {
   console.log(`Serveur lancé sur le port: http://localhost:${PORT}`);

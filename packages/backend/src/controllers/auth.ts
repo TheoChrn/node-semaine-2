@@ -40,6 +40,8 @@ export const auth = {
         return;
       }
 
+      const { password: userPassword, ...restUser } = user;
+
       const isPasswordValid = await argon2.verify(user.password, password);
 
       if (!isPasswordValid) {
@@ -61,11 +63,15 @@ export const auth = {
 
       response.cookie("accessToken", accessToken, {
         httpOnly: true,
-        sameSite: "strict",
+        sameSite: "lax",
         secure: NODE_ENV === "production",
       });
 
-      APIResponse({ response,  message: "Vous êtes bien connecté" });
+      APIResponse({
+        response,
+        data: restUser,
+        message: "Vous êtes bien connecté",
+      });
     } catch (err: any) {
       logger.error(
         `Erreur lors de la connexion de l'utilisateur: ${err.message}`
@@ -117,7 +123,7 @@ export const auth = {
         sameSite: "strict",
         secure: NODE_ENV === "production",
       });
-      APIResponse({ response,  message: "Vous êtes bien connecté" });
+      APIResponse({ response, message: "Vous êtes bien connecté" });
     } catch (err: any) {
       logger.error(
         `Erreur lors de la création de l'utilisateur: ${err.message}`
@@ -131,6 +137,6 @@ export const auth = {
   },
   logout: async (_: Request, response: Response) => {
     response.clearCookie("accessToken");
-    APIResponse({ response,  message: "Vous êtes déconnecté" });
+    APIResponse({ response, message: "Vous êtes déconnecté" });
   },
 };

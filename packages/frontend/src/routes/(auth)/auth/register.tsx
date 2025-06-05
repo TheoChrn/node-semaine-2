@@ -1,54 +1,20 @@
 import { Input } from "@/src/components/ui/input";
 import { useForm } from "@tanstack/react-form";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { loginSchema } from "../../../../../shared/src/validators";
 
 import { Button } from "@/src/components/ui/button";
-import { ButtonLink } from "@/src/components/ui/button-link";
 import { Heading } from "@ariakit/react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-export const Route = createFileRoute("/(auth)/auth/login")({
+export const Route = createFileRoute("/(auth)/auth/register")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
-
-  const mutation = useMutation({
-    mutationFn: async (credentials: { email: string; password: string }) => {
-      const res = await fetch(`/api/auth/login`, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(credentials),
-      });
-
-      const data = await res.json();
-
-      return data.data;
-    },
-    onSuccess: async (data) => {
-      await queryClient.setQueryData(["currentUser"], data);
-
-      navigate({
-        to: "/dashboard",
-        replace: true,
-      });
-    },
-  });
-
   const form = useForm({
     defaultValues: {
       email: "",
       password: "",
-    },
-    onSubmit: ({ value }) => {
-      console.log(value);
-      mutation.mutate(value);
     },
   });
 
@@ -61,7 +27,7 @@ function RouteComponent() {
         form.handleSubmit();
       }}
     >
-      <Heading>Connexion</Heading>
+      <Heading>Inscription</Heading>
       <div>
         <form.Field
           validators={{ onChange: loginSchema.shape.email }}
@@ -73,37 +39,29 @@ function RouteComponent() {
                   Email:
                   <Input
                     id={field.name}
-                    type="email"
                     name={field.name}
                     value={field.state.value}
                     onBlur={field.handleBlur}
                     onChange={(e) => field.handleChange(e.target.value)}
                   />
                 </label>
-                {field.state.meta.errors[0]?.message && (
-                  <span>{field.state.meta.errors[0]?.message}</span>
-                )}
               </>
             );
           }}
         />
         <form.Field
           name="password"
-          validators={{ onChange: loginSchema.shape.password }}
+          validators={{ onChange: loginSchema.shape.email }}
           children={(field) => (
             <>
               <label htmlFor={field.name}>Mot de passe:</label>
               <Input
                 id={field.name}
-                type="password"
                 name={field.name}
                 value={field.state.value}
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
-              {field.state.meta.errors[0]?.message && (
-                <span>{field.state.meta.errors[0]?.message}</span>
-              )}
             </>
           )}
         />
@@ -113,19 +71,26 @@ function RouteComponent() {
         selector={(state) => [state.canSubmit, state.isSubmitting]}
         children={([canSubmit, isSubmitting]) => (
           <div className="flex gap-2">
-            <ButtonLink
-              to="/auth/register"
-              variant="outline"
+            <Button
+              type="submit"
+              variant="default"
+              disabled={!canSubmit}
               className="flex-1"
             >
               {isSubmitting ? "..." : "Inscription"}
-            </ButtonLink>
-            <Button type="submit" disabled={!canSubmit} className="flex-1">
-              {isSubmitting ? "..." : "Connexion"}
             </Button>
           </div>
         )}
       />
+
+      <div>
+        <span>
+          Vous avez déjà un compte ?{" "}
+          <Link className="font-semibold" to="/auth/register">
+            Connectez-vous
+          </Link>
+        </span>
+      </div>
     </form>
   );
 }

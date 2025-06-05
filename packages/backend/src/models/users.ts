@@ -30,11 +30,9 @@ export const user = {
     }
   },
   getByEmail: async (input: { email: string }) => {
-    console.log(`input: ${input}`);
-
     try {
       const user = await db.query.users.findFirst({
-        columns: { id: true, password: true, role: true },
+        columns: { id: true, email: true, password: true, role: true },
         where: (user, { eq }) => eq(user.email, input.email),
       });
 
