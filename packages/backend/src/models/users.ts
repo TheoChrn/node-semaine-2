@@ -91,6 +91,20 @@ export const user = {
       );
     }
   },
+  getSession: async (input: { id: string }) => {
+    try {
+      return db.query.users.findFirst({
+        columns: { email: true, role: true, firstName: true, lastName: true },
+        where: (comment, { eq }) => eq(comment.id, input.id),
+      });
+    } catch (error) {
+      logger.error(
+        `Impossible de récupérer le user: ${
+          error instanceof Error ? error.message : "Something went wrong"
+        }`
+      );
+    }
+  },
   getAll: async () => {
     try {
       return db.query.users.findMany({

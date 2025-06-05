@@ -3,10 +3,11 @@
   "compilerOptions": {
     "noErrorTruncation": true,
     "jsx": "preserve",
-    "baseUrl": ".",
+    "baseUrl": "./",
     "paths": {
       "@/*": ["./*"],
-      "@monorepo/shared": ["packages/shared/src"]
+      "@/src": ["./src/*"],
+      "@monorepo/shared": ["../../shared/src"]
     },
     "incremental": true,
     "checkJs": true

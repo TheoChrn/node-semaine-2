@@ -18,7 +18,7 @@ declare global {
   interface EnvConfig {
     PORT: number;
     NODE_ENV: "development" | "production" | "test";
-    ORIGIN: string;
+    CORS_ORIGIN: string;
     DATABASE_URL: string;
     JWT_SECRET: string;
   }

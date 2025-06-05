@@ -42,8 +42,6 @@ export const auth = {
 
       const isPasswordValid = await argon2.verify(user.password, password);
 
-      console.log(isPasswordValid);
-
       if (!isPasswordValid) {
         APIResponse({
           response,

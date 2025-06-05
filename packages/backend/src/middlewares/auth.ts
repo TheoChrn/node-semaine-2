@@ -14,7 +14,6 @@ export const isAuthenticated = (
   if (!accessToken) {
     APIResponse({
       response,
-      data: {},
       message: "Vous devez être connecté",
       status: 401,
     });

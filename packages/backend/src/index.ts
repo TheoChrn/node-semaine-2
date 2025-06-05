@@ -7,11 +7,11 @@ import cookieParser from "cookie-parser";
 
 const app = express();
 
-const { PORT, ORIGIN } = env;
+const { PORT, CORS_ORIGIN } = env;
 
 app.use(
   cors({
-    origin: ORIGIN,
+    origin: CORS_ORIGIN,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
   })

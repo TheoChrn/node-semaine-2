@@ -10,4 +10,7 @@ export const APIResponse = ({
   data?: any;
   message?: string;
   status?: number;
-}) => response.status(status).json({ status, message, data });
+}) => {
+  console.log("api response");
+  return response.status(status).json({ status, message, data });
+};
