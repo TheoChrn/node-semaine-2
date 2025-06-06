@@ -2,14 +2,30 @@ import type { UpdateComment } from "@/db/entities/comments";
 import { models } from "@/models/index";
 import { logger } from "@/utils/logger";
 import { APIResponse } from "@/utils/response";
+import { createCommentSchema } from "@monorepo/shared";
 import type { Request, Response } from "express";
 
 export const comment = {
   create: async (request: Request, response: Response) => {
-    console.log("create");
     try {
       const { content, featureId, parentId } = request.body;
       const { id } = response.locals.user;
+
+      const validation = createCommentSchema.safeParse({
+        content,
+        parentId,
+        featureId,
+      });
+
+      if (validation.error) {
+        APIResponse({
+          response,
+          message: validation.error.message,
+          status: 400,
+        });
+        return;
+      }
+
       logger.info("[POST] Créer un commentaire");
       const comment = await models.comment.create({
         authorId: id,
@@ -51,7 +67,9 @@ export const comment = {
     try {
       logger.info("[UPDATE] Update un commentaire");
       const { id } = request.params;
+      console.log(request.body);
       const { content } = request.body;
+
       const { user } = response.locals;
 
       const input = {

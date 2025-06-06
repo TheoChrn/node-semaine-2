@@ -81,8 +81,6 @@ export const auth = {
     try {
       const { email, password } = request.body;
 
-      console.log(request.body);
-
       const validation = createUserSchema.safeParse(request.body);
 
       if (!validation.success) {
@@ -138,6 +136,7 @@ export const auth = {
     }
   },
   logout: async (_: Request, response: Response) => {
+    console.log("logout");
     response.clearCookie("accessToken");
     APIResponse({ response, message: "Vous êtes déconnecté" });
   },

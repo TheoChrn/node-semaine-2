@@ -4,7 +4,7 @@ import type { NewComment, UpdateComment } from "@/db/entities//comments";
 import { schema } from "@/db/schemas";
 
 import { db } from "@/db/config/pool";
-import { userRolesValues, type UserRole } from "@/db/schemas/users";
+import { type UserRole } from "@/db/schemas/users";
 import { logger } from "@/utils/logger";
 
 export const comment = {
@@ -14,14 +14,18 @@ export const comment = {
     return db.insert(schema.comments).values(input);
   },
   delete: async (input: { id: string; userId: string; role: UserRole }) => {
-    db.delete(schema.comments).where(
-      and(
-        eq(schema.comments.id, input.id),
-        input.role === userRolesValues.USER
-          ? eq(schema.comments.authorId, input.userId)
-          : undefined
-      )
-    );
+    if (input.role === "admin") {
+      return db.delete(schema.comments).where(eq(schema.comments.id, input.id));
+    } else {
+      return db
+        .delete(schema.comments)
+        .where(
+          and(
+            eq(schema.comments.id, input.id),
+            eq(schema.comments.authorId, input.userId)
+          )
+        );
+    }
   },
   update: async (input: UpdateComment) => {
     try {
@@ -31,7 +35,7 @@ export const comment = {
         .where(eq(schema.comments.id, input.id));
     } catch (error) {
       logger.error(
-        `Impossible de créer le commentaire: ${
+        `Impossible de mettre à jour le commentaire: ${
           error instanceof Error ? error.message : ""
         }`
       );
@@ -47,7 +51,7 @@ export const comment = {
       });
     } catch (error) {
       logger.error(
-        `Impossible de créer le commentaire: ${
+        `Impossible de récupérer  les commentaire: ${
           error instanceof Error ? error.message : ""
         }`
       );

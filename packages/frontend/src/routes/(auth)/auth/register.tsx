@@ -28,7 +28,6 @@ function RouteComponent() {
 
       const data = await res.json();
 
-      console.log(res.ok);
       if (!res.ok) {
         throw new Error(data.message);
       }
@@ -46,12 +45,10 @@ function RouteComponent() {
       form.setErrorMap({
         onSubmit: {
           fields: {
-            email: { message: "User already exists" },
+            email: { message: "Cet email est déjà utilisé" },
           },
         },
       });
-
-      console.log(form.state.fieldMeta.email);
     },
   });
 

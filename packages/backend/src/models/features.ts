@@ -4,7 +4,7 @@ import { logger } from "@/utils/logger";
 
 import { schema } from "@/db/schemas";
 import { groupBy, nestComments, NotFoundError } from "@/utils";
-import { and, count, eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 
 export const feature = {
   create: async (input: CreateFeatureInput) => {
@@ -44,6 +44,7 @@ export const feature = {
           comments: {
             columns: {
               parentId: true,
+              authorId: true,
               id: true,
               content: true,
               createdAt: true,
@@ -53,7 +54,12 @@ export const feature = {
                 with: {
                   user: { columns: { email: true } },
                 },
-                columns: { authorId: true, content: true, createdAt: true },
+                columns: {
+                  id: true,
+                  authorId: true,
+                  content: true,
+                  createdAt: true,
+                },
               },
               user: {
                 columns: { email: true },

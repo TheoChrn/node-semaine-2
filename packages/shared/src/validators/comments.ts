@@ -1,8 +1,12 @@
 import { z } from "zod";
 
 export const createCommentSchema = z.object({
-  title: z.string().min(1, "A title is required"),
   content: z.string().min(1, "A content is required"),
+  parentId: z
+    .string()
+    .uuid()
+    .optional()
+    .transform((val) => val || null),
 });
 export const updateCommentSchema = createCommentSchema.extend({
   id: z.string(),

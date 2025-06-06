@@ -19,6 +19,7 @@ declare global {
 
   interface CommentBase {
     id: string;
+    authorId: string;
     createdAt: Date;
     content: string;
     parentId: string | null;
@@ -26,6 +27,7 @@ declare global {
       email: string;
     };
     parent: {
+      id: string;
       createdAt: Date;
       content: string;
       authorId: string;

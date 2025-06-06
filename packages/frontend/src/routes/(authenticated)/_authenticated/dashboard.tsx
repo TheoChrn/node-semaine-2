@@ -75,7 +75,7 @@ function RouteComponent() {
 
   return (
     <>
-      <div className="space-y-8">
+      <div className="space-y-8 flex-1">
         <div className="flex items-center justify-between">
           <Heading>See all the current features</Heading>
           {user.role === "admin" && (

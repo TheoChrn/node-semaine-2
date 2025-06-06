@@ -16,7 +16,6 @@ export const Route = createFileRoute("/(auth)/auth/login")({
 function RouteComponent() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  console.log(import.meta.env.VITE_API_URL);
   const mutation = useMutation({
     mutationFn: async (credentials: { email: string; password: string }) => {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
@@ -30,6 +29,10 @@ function RouteComponent() {
 
       const data = await res.json();
 
+      if (!res.ok) {
+        throw new Error(data.message);
+      }
+
       return data.data;
     },
     onSuccess: async (data) => {
@@ -38,6 +41,16 @@ function RouteComponent() {
       navigate({
         to: "/dashboard",
         replace: true,
+      });
+    },
+    onError: async () => {
+      form.setErrorMap({
+        onSubmit: {
+          fields: {
+            email: { message: "L'email ou le mot de passe est incorrect" },
+            password: { message: "L'email ou le mot de passe est incorrect" },
+          },
+        },
       });
     },
   });

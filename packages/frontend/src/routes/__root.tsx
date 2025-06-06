@@ -53,7 +53,10 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 
     const isAuthenticated = !!user;
 
-    if (!isAuthenticated && !location.pathname.startsWith("/auth")) {
+    if (
+      !isAuthenticated &&
+      (!location.pathname.startsWith("/auth") || location.pathname === "/")
+    ) {
       throw redirect({
         to: "/auth/login",
         search: {
@@ -62,7 +65,10 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
         },
       });
     }
-    if (isAuthenticated && location.pathname.startsWith("/auth")) {
+    if (
+      isAuthenticated &&
+      (location.pathname.startsWith("/auth") || location.pathname === "/")
+    ) {
       throw redirect({
         to: "/dashboard",
         search: {
