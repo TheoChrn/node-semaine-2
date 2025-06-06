@@ -92,6 +92,14 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
       </>
     );
   },
+  errorComponent: () => {
+    return (
+      <div>
+        <p>Something went wrong</p>
+        <ButtonLink to="/">Start Over</ButtonLink>
+      </div>
+    );
+  },
   notFoundComponent: () => {
     return (
       <div>

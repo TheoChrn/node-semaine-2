@@ -8,6 +8,7 @@ declare global {
         upCount: number;
         downCount: number;
       };
+      commentCount: number;
       id: string;
       description: string;
       title: string;

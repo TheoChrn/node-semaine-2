@@ -157,7 +157,10 @@ function RouteComponent() {
   }
 
   return (
-    <Dialog onClose={() => navigate({ to: "/dashboard" })}>
+    <Dialog
+      className="space-y-8"
+      onClose={() => navigate({ to: "/dashboard" })}
+    >
       <HeadingLevel>
         <div className="flex gap-4 items-start">
           <div className="space-y-2">
@@ -193,6 +196,7 @@ function RouteComponent() {
             e.stopPropagation();
             form.handleSubmit();
           }}
+          className="space-y-4"
         >
           <form.Field
             validators={{ onChange: createCommentSchema.shape.content }}
@@ -200,13 +204,13 @@ function RouteComponent() {
             children={(field) => {
               return (
                 <>
-                  <label>
+                  <label className="block">
                     Commentaire
                     <textarea
                       id={field.name}
                       name={field.name}
                       value={field.state.value}
-                      className="placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex h-9 w-full min-w-0 rounded border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm
+                      className="appearance-none min-h-20 placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex h-9 w-full min-w-0 rounded border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm
         focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]
         aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive"
                       onBlur={field.handleBlur}
@@ -238,8 +242,13 @@ function RouteComponent() {
             )}
           />
         </form>
-        {!!feature.comments &&
-          feature.comments.map((comment) => <CommentItem comment={comment} />)}
+        {!!feature.comments && (
+          <ul>
+            {feature.comments.map((comment) => (
+              <CommentItem comment={comment} />
+            ))}
+          </ul>
+        )}
       </HeadingLevel>
     </Dialog>
   );
@@ -247,16 +256,17 @@ function RouteComponent() {
 
 const CommentItem = ({ comment }: { comment: CommentWithChildren }) => {
   return (
-    <div className="ml-4 mt-4 border-l pl-4">
+    <div className="pl-4 not-first:pt-4  ">
       <div className="text-sm text-gray-800">
-        <strong>{comment.user?.email || "User"}</strong> – {comment.content}
+        <strong>{comment.user.email}</strong> –{" "}
+        <span className="text-xs text-gray-500">
+          {new Date(comment.createdAt).toLocaleString("fr-FR")}
+        </span>
       </div>
-      <div className="text-xs text-gray-500">
-        {new Date(comment.createdAt).toLocaleString("fr-FR")}
-      </div>
+      <p>{comment.content}</p>
 
       {comment.children && comment.children.length > 0 && (
-        <div className="mt-2">
+        <div className="mt-2 pt-2 border-l">
           {comment.children.map((child) => (
             <CommentItem key={child.id} comment={child} />
           ))}

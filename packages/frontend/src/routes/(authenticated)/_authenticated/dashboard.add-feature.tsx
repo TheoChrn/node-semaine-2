@@ -21,6 +21,7 @@ function RouteComponent() {
 
   const { mutate, isPending, isSuccess } = useMutation({
     mutationFn: async (feature: { title: string; description: string }) => {
+      throw new Error("Erreur");
       await fetch(`/api/features`, {
         method: "POST",
         credentials: "include",
@@ -32,7 +33,6 @@ function RouteComponent() {
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["getAllFeatures"] });
-
       navigate({
         to: "/dashboard",
         replace: true,

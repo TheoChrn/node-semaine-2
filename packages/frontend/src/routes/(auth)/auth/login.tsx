@@ -117,7 +117,7 @@ function RouteComponent() {
               variant="outline"
               className="flex-1"
             >
-              {isSubmitting || mutation.isPending ? "..." : "Inscription"}
+              Inscription
             </ButtonLink>
             <Button
               type="submit"

@@ -4,7 +4,7 @@ import { logger } from "@/utils/logger";
 
 import { schema } from "@/db/schemas";
 import { groupBy, nestComments, NotFoundError } from "@/utils";
-import { and, eq } from "drizzle-orm";
+import { and, count, eq } from "drizzle-orm";
 
 export const feature = {
   create: async (input: CreateFeatureInput) => {
@@ -78,18 +78,6 @@ export const feature = {
 
     const { votes, ...restFeature } = feature;
 
-    const x = {
-      ...restFeature,
-      votes: {
-        users: votes?.map(({ userId }) => userId) ?? [],
-        userValue: votes?.find((val) => val.userId === input.userId)?.value,
-        upCount: votes?.filter(({ value }) => value === "up").length,
-        downCount: votes?.filter(({ value }) => value === "down").length,
-      },
-    };
-
-    type b = typeof x;
-
     return {
       ...restFeature,
       votes: {
@@ -114,14 +102,16 @@ export const feature = {
           votes: {
             columns: { value: true, userId: true },
           },
+          comments: true,
         },
       })
       .then((rows) => {
         const formattedArr = rows.map((row) => {
-          const { votes, ...feature } = row;
+          const { votes, comments, ...feature } = row;
 
           return {
             ...feature,
+            commentCount: comments.length,
             votes: {
               upCount: votes.filter(({ value }) => value === "up").length,
               downCount: votes.filter(({ value }) => value === "down").length,

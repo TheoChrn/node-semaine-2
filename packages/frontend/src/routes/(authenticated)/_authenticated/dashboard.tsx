@@ -87,11 +87,11 @@ function RouteComponent() {
           )}
         </div>
         <HeadingLevel>
-          <div className="flex flex-wrap gap-4">
+          <div className="grid grid-cols-3 gap-4">
             {Object.entries(data).map(([key, value]) => (
               <ul
                 key={key}
-                className="space-y-3 flex-1 p-4 border-border shadow bg-secondary rounded-lg"
+                className="space-y-3 p-4 border-border shadow bg-secondary rounded-lg"
               >
                 <Heading className="text-2xl font-bold text-center capitalize">
                   {key}
@@ -113,16 +113,25 @@ function RouteComponent() {
                         </Heading>
 
                         <div className="flex items-center gap-3">
-                          <p className="flex-1/3">{feature.description}</p>
-                          <div className="flex items-center gap-1">
-                            {feature.votes.upCount}
-                            <ChevronUp size={16} className="text-green-600" />
+                          <p className="line-clamp-1 flex-2/3 truncate">
+                            {feature.description}
+                          </p>
+                          <div className="flex flex-auto items-center justify-between ">
+                            <div className="flex items-center gap-1">
+                              {feature.votes.upCount}
+                              <ChevronUp size={16} className="text-green-600" />
+                            </div>
+                            <div className="flex items-center gap-1">
+                              {feature.votes.downCount}
+                              <ChevronDown size={16} className="text-red-600" />
+                            </div>
+                            <div className="relative">
+                              <div className="absolute -top-2 -right-2  size-4 rounded-full content-center text-center  text-xs  text-secondary bg-black">
+                                {feature.commentCount}
+                              </div>
+                              <MessagesSquare size={16} />
+                            </div>
                           </div>
-                          <div className="flex items-center gap-1">
-                            {feature.votes.downCount}
-                            <ChevronDown size={16} className="text-red-600" />
-                          </div>
-                          <MessagesSquare size={16} />
                         </div>
                       </article>
                     </Link>
