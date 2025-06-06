@@ -28,15 +28,30 @@ function RouteComponent() {
 
       const data = await res.json();
 
+      console.log(res.ok);
+      if (!res.ok) {
+        throw new Error(data.message);
+      }
+
       return data.data;
     },
     onSuccess: async (data) => {
       await queryClient.setQueryData(["currentUser"], data);
-
       navigate({
         to: "/dashboard",
         replace: true,
       });
+    },
+    onError: async () => {
+      form.setErrorMap({
+        onSubmit: {
+          fields: {
+            email: { message: "User already exists" },
+          },
+        },
+      });
+
+      console.log(form.state.fieldMeta.email);
     },
   });
 
@@ -61,44 +76,55 @@ function RouteComponent() {
     >
       <Heading>Inscription</Heading>
       <div>
-        <form.Field
-          validators={{ onChange: loginSchema.shape.email }}
-          name="email"
-          children={(field) => {
-            return (
+        <div>
+          <form.Field
+            validators={{ onChange: loginSchema.shape.email }}
+            name="email"
+            children={(field) => {
+              return (
+                <>
+                  <label>
+                    Email:
+                    <Input
+                      id={field.name}
+                      type="email"
+                      name={field.name}
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                    />
+                  </label>
+                  {field.state.meta.errors[0]?.message && (
+                    <span>{field.state.meta.errors[0]?.message}</span>
+                  )}
+                </>
+              );
+            }}
+          />
+        </div>
+        <div>
+          {" "}
+          <form.Field
+            name="password"
+            validators={{ onChange: loginSchema.shape.password }}
+            children={(field) => (
               <>
-                <label>
-                  Email:
-                  <Input
-                    id={field.name}
-                    name={field.name}
-                    type="email"
-                    value={field.state.value}
-                    onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                  />
-                </label>
+                <label htmlFor={field.name}>Mot de passe:</label>
+                <Input
+                  id={field.name}
+                  type="password"
+                  name={field.name}
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                />
+                {field.state.meta.errors[0]?.message && (
+                  <span>{field.state.meta.errors[0]?.message}</span>
+                )}
               </>
-            );
-          }}
-        />
-        <form.Field
-          name="password"
-          validators={{ onChange: loginSchema.shape.password }}
-          children={(field) => (
-            <>
-              <label htmlFor={field.name}>Mot de passe:</label>
-              <Input
-                id={field.name}
-                name={field.name}
-                type="password"
-                value={field.state.value}
-                onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(e.target.value)}
-              />
-            </>
-          )}
-        />
+            )}
+          />
+        </div>
       </div>
 
       <form.Subscribe
@@ -120,7 +146,7 @@ function RouteComponent() {
       <div>
         <span>
           Vous avez déjà un compte ?{" "}
-          <Link className="font-semibold" to="/auth/register">
+          <Link className="font-semibold" to="/auth/login">
             Connectez-vous
           </Link>
         </span>

@@ -7,6 +7,7 @@ import { Button } from "@/src/components/ui/button";
 import { ButtonLink } from "@/src/components/ui/button-link";
 import { Heading } from "@ariakit/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { ErrorMessage } from "@/src/components/ui/error-message";
 
 export const Route = createFileRoute("/(auth)/auth/login")({
   component: RouteComponent,
@@ -62,50 +63,56 @@ function RouteComponent() {
     >
       <Heading>Connexion</Heading>
       <div>
-        <form.Field
-          validators={{ onChange: loginSchema.shape.email }}
-          name="email"
-          children={(field) => {
-            return (
+        <div>
+          <form.Field
+            validators={{ onChange: loginSchema.shape.email }}
+            name="email"
+            children={(field) => {
+              return (
+                <>
+                  <label>
+                    Email:
+                    <Input
+                      id={field.name}
+                      type="email"
+                      name={field.name}
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                    />
+                  </label>
+                  {field.state.meta.errors[0]?.message && (
+                    <ErrorMessage
+                      message={field.state.meta.errors[0]?.message}
+                    />
+                  )}
+                </>
+              );
+            }}
+          />
+        </div>
+        <div>
+          <form.Field
+            name="password"
+            validators={{ onChange: loginSchema.shape.password }}
+            children={(field) => (
               <>
-                <label>
-                  Email:
-                  <Input
-                    id={field.name}
-                    type="email"
-                    name={field.name}
-                    value={field.state.value}
-                    onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                  />
-                </label>
+                <label htmlFor={field.name}>Mot de passe:</label>
+                <Input
+                  id={field.name}
+                  type="password"
+                  name={field.name}
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                />
                 {field.state.meta.errors[0]?.message && (
-                  <span>{field.state.meta.errors[0]?.message}</span>
+                  <ErrorMessage message={field.state.meta.errors[0]?.message} />
                 )}
               </>
-            );
-          }}
-        />
-        <form.Field
-          name="password"
-          validators={{ onChange: loginSchema.shape.password }}
-          children={(field) => (
-            <>
-              <label htmlFor={field.name}>Mot de passe:</label>
-              <Input
-                id={field.name}
-                type="password"
-                name={field.name}
-                value={field.state.value}
-                onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(e.target.value)}
-              />
-              {field.state.meta.errors[0]?.message && (
-                <span>{field.state.meta.errors[0]?.message}</span>
-              )}
-            </>
-          )}
-        />
+            )}
+          />
+        </div>
       </div>
 
       <form.Subscribe
