@@ -4,7 +4,6 @@ import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(auth)/auth")({
   beforeLoad: ({ location }) => {
-    console.log(location);
     if (location.pathname === "/auth") {
       return redirect({ to: "/auth/login" });
     }

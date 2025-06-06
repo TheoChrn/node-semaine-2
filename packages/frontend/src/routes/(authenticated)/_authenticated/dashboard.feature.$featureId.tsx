@@ -340,7 +340,6 @@ const CommentItem = ({
   });
   const { mutate: updateComment, isPending: updateIsPending } = useMutation({
     mutationFn: async (newComment: { content: string }) => {
-      console.log(newComment);
       await fetch(`${import.meta.env.VITE_API_URL}/comments/${comment.id}`, {
         method: "PATCH",
         credentials: "include",

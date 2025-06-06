@@ -116,7 +116,7 @@ export const auth = {
 
       response.cookie("accessToken", accessToken, {
         httpOnly: true,
-        sameSite: "strict",
+        sameSite: NODE_ENV === "production" ? "none" : "strict",
         secure: NODE_ENV === "production",
       });
       APIResponse({
@@ -136,10 +136,9 @@ export const auth = {
     }
   },
   logout: async (_: Request, response: Response) => {
-    console.log("logout");
     response.cookie("accessToken", "", {
       httpOnly: true,
-      sameSite: "strict",
+      sameSite: NODE_ENV === "production" ? "none" : "strict",
       secure: NODE_ENV === "production",
       maxAge: 0,
     });

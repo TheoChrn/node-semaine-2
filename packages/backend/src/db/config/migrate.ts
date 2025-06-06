@@ -5,8 +5,6 @@ import { Pool } from "pg";
 
 const { DATABASE_URL, NODE_ENV } = env;
 
-console.log(NODE_ENV + " " + DATABASE_URL);
-
 async function main() {
   const pool = new Pool({ connectionString: DATABASE_URL });
   const db = drizzle(pool);

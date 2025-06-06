@@ -11,6 +11,5 @@ export const APIResponse = ({
   message?: string;
   status?: number;
 }) => {
-  console.log("api response");
   return response.status(status).json({ status, message, data });
 };
