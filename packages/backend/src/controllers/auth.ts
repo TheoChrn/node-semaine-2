@@ -137,10 +137,11 @@ export const auth = {
   },
   logout: async (_: Request, response: Response) => {
     console.log("logout");
-    response.clearCookie("accessToken", {
+    response.cookie("accessToken", "", {
       httpOnly: true,
       sameSite: "strict",
       secure: NODE_ENV === "production",
+      maxAge: 0,
     });
     APIResponse({ response, message: "Vous êtes déconnecté" });
   },
