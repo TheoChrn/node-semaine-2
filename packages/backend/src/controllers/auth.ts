@@ -8,10 +8,7 @@ import { APIResponse } from "@/utils/response";
 
 import { models } from "@/models";
 import { logger } from "@/utils/logger";
-import {
-  createUserSchema,
-  loginUserSchema,
-} from "@monorepo/shared/src/validators";
+import { createUserSchema, loginUserSchema } from "@monorepo/shared";
 
 const { JWT_SECRET, NODE_ENV } = env;
 

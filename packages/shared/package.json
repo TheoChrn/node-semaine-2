@@ -6,11 +6,15 @@
   "main": "./src/validators/index.ts",
   "types": "./src/validators/index.ts",
   "scripts": {
-    "build": "tsup src/index.ts --format esm --dts --clean --tsconfig tsconfig.json",
+    "build": "tsup src --format esm --dts --clean --tsconfig tsconfig.json",
     "dev": "tsx --watch ./src/index.ts"
   },
   "exports": {
-    "./src/validators": "./src/index.ts"
+    "./src/validators": "./src/index.ts",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
   },
   "keywords": [],
   "author": "",

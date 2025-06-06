@@ -6,7 +6,7 @@
     "lint": "pnpm --filter frontend run lint",
     "preview": "pnpm --filter frontend run preview",
     "backend:build": "pnpm --filter @monorepo/backend run build",
-    "render:build": "pnpm --filter @monorepo/shared... run build && pnpm --filter @monorepo/backend... run build",
+    "render:build": "pnpm --filter @monorepo/shared run build && pnpm --filter @monorepo/backend run build",
     "backend:start": "pnpm --filter @monorepo/backend run start",
     "generate": "pnpm --filter @monorepo/backend run generate",
     "migrate:dev": "pnpm --filter @monorepo/backend run migrate:dev",
