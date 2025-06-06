@@ -14,7 +14,7 @@ export const currentUserQueryOptions = () =>
     queryKey: ["currentUser"],
     queryFn: async () => {
       try {
-        const res = await fetch("/api/users", {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/users`, {
           method: "GET",
           credentials: "include",
           headers: {
@@ -23,10 +23,6 @@ export const currentUserQueryOptions = () =>
         });
 
         if (!res.ok) {
-          console.warn(
-            "Authentication check failed on /api/users. Status:",
-            res.status
-          );
           return null;
         }
 

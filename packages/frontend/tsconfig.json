@@ -1,4 +1,3 @@
-
 {
   "compilerOptions": {
     "target": "es2020",
@@ -27,5 +26,9 @@
       "@shared/*": ["../shared/src/*"]
     }
   },
-  "include": ["src", "vite-env.d.ts"]
+  "include": [
+    "src",
+    "vite-env.d.ts",
+    "src/routes/(authenticated)/_authenticated/.tsx"
+  ]
 }

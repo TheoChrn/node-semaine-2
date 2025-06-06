@@ -6,7 +6,7 @@ import {
   createFeatureInputSchema,
   updateFeatureSchema,
   validateIdSchema,
-} from "@monorepo/shared/src/validators";
+} from "@monorepo/shared";
 import type { Request, Response } from "express";
 
 export const feature = {

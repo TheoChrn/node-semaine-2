@@ -3,19 +3,20 @@
   "version": "1.0.0",
   "description": "",
   "type": "module",
-  "main": "./src/validators/index.ts",
-  "types": "./src/validators/index.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "tsup src --format esm --dts --clean --tsconfig tsconfig.json",
-    "dev": "tsx --watch ./src/index.ts"
+    "build": "tsup src/index.ts --format esm --dts --clean --tsconfig tsconfig.json"
   },
   "exports": {
-    "./src/validators": "./src/index.ts",
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     }
   },
+  "files": [
+    "dist"
+  ],
   "keywords": [],
   "author": "",
   "license": "ISC",

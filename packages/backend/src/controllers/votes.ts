@@ -1,7 +1,7 @@
 import { models } from "@/models/index";
 import { logger } from "@/utils/logger";
 import { APIResponse } from "@/utils/response";
-import { createVoteSchema } from "@monorepo/shared/src/validators";
+import { createVoteSchema } from "@monorepo/shared";
 import type { Request, Response } from "express";
 
 export const vote = {

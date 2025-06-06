@@ -18,13 +18,16 @@ const getFeature = (featureId: string) =>
     queryKey: ["getFeature", featureId],
     queryFn: async (): Promise<Feature | null> => {
       try {
-        const res = await fetch(`/api/features/${featureId}`, {
-          method: "GET",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const res = await fetch(
+          `${import.meta.env.VITE_API_URL}/features/${featureId}`,
+          {
+            method: "GET",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
         if (!res.ok) {
           return null;
@@ -60,7 +63,7 @@ function RouteComponent() {
 
   const { mutate } = useMutation({
     mutationFn: async (vote: { featureId: string; value: "up" | "down" }) => {
-      await fetch(`/api/votes`, {
+      await fetch(`${import.meta.env.VITE_API_URL}/votes`, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -125,7 +128,7 @@ function RouteComponent() {
   });
   const { mutate: mutateComment, isPending: commentIsPending } = useMutation({
     mutationFn: async (comment: { featureId: string; content: string }) => {
-      await fetch(`/api/comments`, {
+      await fetch(`${import.meta.env.VITE_API_URL}/comments`, {
         method: "POST",
         credentials: "include",
         headers: {

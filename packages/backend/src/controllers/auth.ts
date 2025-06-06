@@ -60,8 +60,9 @@ export const auth = {
 
       response.cookie("accessToken", accessToken, {
         httpOnly: true,
-        sameSite: "lax",
+        sameSite: NODE_ENV === "production" ? "none" : "lax",
         secure: NODE_ENV === "production",
+        path: "/",
       });
 
       APIResponse({

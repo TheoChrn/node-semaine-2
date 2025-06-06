@@ -4,10 +4,7 @@ import { logger } from "@/utils/logger";
 
 import { schema } from "@/db/schemas";
 import { eq } from "drizzle-orm";
-import {
-  createUserSchema,
-  updateUserSchema,
-} from "@monorepo/shared/src/validators";
+import { createUserSchema, updateUserSchema } from "@monorepo/shared";
 
 export const user = {
   create: async (input: CreateUser) => {

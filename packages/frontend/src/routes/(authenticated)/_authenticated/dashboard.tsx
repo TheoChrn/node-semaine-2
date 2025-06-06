@@ -1,4 +1,3 @@
-import { Button } from "@/src/components/ui/button";
 import { ButtonLink } from "@/src/components/ui/button-link";
 import { Heading, HeadingLevel } from "@ariakit/react";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
@@ -15,7 +14,7 @@ const geAllFeaturesQueryOptions = () =>
     queryKey: ["getAllFeatures"],
     queryFn: async (): Promise<Features | null> => {
       try {
-        const res = await fetch("/api/features", {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/features`, {
           method: "GET",
           credentials: "include",
           headers: {
@@ -24,10 +23,6 @@ const geAllFeaturesQueryOptions = () =>
         });
 
         if (!res.ok) {
-          console.warn(
-            "Authentication check failed on /api/features. Status:",
-            res.status
-          );
           return null;
         }
 
@@ -66,11 +61,14 @@ function RouteComponent() {
         {user.role === "admin" ? (
           <>
             <span>Aucune feature n'a été publié</span>
-            <Button>Ajouter</Button>
+            <ButtonLink variant="default" to="/dashboard/add-feature">
+              Ajouter <Plus />
+            </ButtonLink>
           </>
         ) : (
-          "Aucune feature n'a été publié, attendé qu'un administrateur en publie une."
+          "Aucune feature n'a été publié, attendez qu'un administrateur en publie une."
         )}
+        <Outlet />
       </div>
     );
   }
@@ -82,7 +80,7 @@ function RouteComponent() {
           <Heading>See all the current features</Heading>
           {user.role === "admin" && (
             <ButtonLink variant="default" to="/dashboard/add-feature">
-              Ajouer <Plus />
+              Ajouter <Plus />
             </ButtonLink>
           )}
         </div>

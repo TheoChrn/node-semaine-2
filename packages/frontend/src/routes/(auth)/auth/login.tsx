@@ -16,10 +16,10 @@ export const Route = createFileRoute("/(auth)/auth/login")({
 function RouteComponent() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-
+  console.log(import.meta.env.VITE_API_URL);
   const mutation = useMutation({
     mutationFn: async (credentials: { email: string; password: string }) => {
-      const res = await fetch(`/api/auth/login`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
         method: "POST",
         credentials: "include",
         headers: {
