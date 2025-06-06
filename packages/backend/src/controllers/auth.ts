@@ -115,6 +115,7 @@ export const auth = {
       });
 
       response.cookie("accessToken", accessToken, {
+        path: "/",
         httpOnly: true,
         sameSite: "strict",
         secure: NODE_ENV === "production",
@@ -138,6 +139,7 @@ export const auth = {
   logout: async (_: Request, response: Response) => {
     console.log("logout");
     response.clearCookie("accessToken", {
+      path: "/",
       httpOnly: true,
       sameSite: "strict",
       secure: NODE_ENV === "production",
