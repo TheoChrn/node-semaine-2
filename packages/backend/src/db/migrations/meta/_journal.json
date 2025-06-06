@@ -57,6 +57,13 @@
       "when": 1749159642935,
       "tag": "0007_colorful_odin",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1749164510556,
+      "tag": "0008_charming_guardsmen",
+      "breakpoints": true
     }
   ]
 }

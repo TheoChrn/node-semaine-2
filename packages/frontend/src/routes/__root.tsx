@@ -58,7 +58,6 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     const isAuthenticated = !!user;
 
     if (!isAuthenticated && !location.pathname.startsWith("/auth")) {
-      console.log("User not authenticated, redirecting to login...");
       throw redirect({
         to: "/auth/login",
         search: {

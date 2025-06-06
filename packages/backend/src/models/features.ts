@@ -3,8 +3,8 @@ import { db } from "@/db/config/pool";
 import { logger } from "@/utils/logger";
 
 import { schema } from "@/db/schemas";
-import { and, count, eq } from "drizzle-orm";
-import { groupBy, NotFoundError } from "@/utils";
+import { groupBy, nestComments, NotFoundError } from "@/utils";
+import { and, eq } from "drizzle-orm";
 
 export const feature = {
   create: async (input: CreateFeatureInput) => {
@@ -41,13 +41,36 @@ export const feature = {
       .findFirst({
         columns: { title: true, description: true, createdBy: true },
         with: {
+          comments: {
+            columns: {
+              parentId: true,
+              id: true,
+              content: true,
+              createdAt: true,
+            },
+            with: {
+              parent: {
+                with: {
+                  user: { columns: { email: true } },
+                },
+                columns: { authorId: true, content: true, createdAt: true },
+              },
+              user: {
+                columns: { email: true },
+              },
+            },
+            orderBy: (comment, { asc }) => [asc(comment.createdAt)],
+          },
           votes: {
             columns: { value: true, userId: true },
           },
         },
         where: (feature, { eq }) => eq(feature.id, input.id),
       })
-      .then((row) => row);
+      .then((row) => ({
+        ...row,
+        comments: row?.comments ? nestComments(row.comments) : [],
+      }));
 
     if (!feature) {
       throw new NotFoundError("This feature doesn't exist");
@@ -58,10 +81,10 @@ export const feature = {
     return {
       ...restFeature,
       votes: {
-        users: votes.map(({ userId }) => userId),
-        userValue: votes.find((val) => val.userId === input.userId)?.value,
-        upCount: votes.filter(({ value }) => value === "up").length,
-        downCount: votes.filter(({ value }) => value === "down").length,
+        users: votes?.map(({ userId }) => userId) ?? [],
+        userValue: votes?.find((val) => val.userId === input.userId)?.value,
+        upCount: votes?.filter(({ value }) => value === "up").length,
+        downCount: votes?.filter(({ value }) => value === "down").length,
       },
     };
   },

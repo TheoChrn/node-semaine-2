@@ -114,8 +114,14 @@ function RouteComponent() {
 
                         <div className="flex items-center gap-3">
                           <p className="flex-1/3">{feature.description}</p>
-                          <ChevronUp size={16} className="text-green-600" />
-                          <ChevronDown size={16} className="text-red-600" />
+                          <div className="flex items-center gap-1">
+                            {feature.votes.upCount}
+                            <ChevronUp size={16} className="text-green-600" />
+                          </div>
+                          <div className="flex items-center gap-1">
+                            {feature.votes.downCount}
+                            <ChevronDown size={16} className="text-red-600" />
+                          </div>
                           <MessagesSquare size={16} />
                         </div>
                       </article>

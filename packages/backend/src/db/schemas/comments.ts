@@ -5,7 +5,6 @@ import { features } from "@/db/schemas/features";
 
 export const comments = pgTable("comments", {
   id: uuid("id").defaultRandom().primaryKey(),
-  title: varchar("title", { length: 255 }).notNull(),
   content: text("content").notNull(),
   parentId: uuid("parent_id"),
   featureId: uuid("feature")

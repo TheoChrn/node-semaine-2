@@ -1,6 +1,9 @@
 import { Button } from "@/src/components/ui/button";
 import { Dialog } from "@/src/components/ui/dialog";
+import { ErrorMessage } from "@/src/components/ui/error-message";
 import { Heading, HeadingLevel, VisuallyHidden } from "@ariakit/react";
+import { createCommentSchema } from "@shared/validators";
+import { useForm } from "@tanstack/react-form";
 import {
   queryOptions,
   useMutation,
@@ -28,10 +31,6 @@ const getFeature = (featureId: string) =>
         });
 
         if (!res.ok) {
-          console.warn(
-            "Authentication check failed on /api/features. Status:",
-            res.status
-          );
           return null;
         }
 
@@ -66,7 +65,6 @@ function RouteComponent() {
     from: "/(authenticated)/_authenticated/dashboard/feature/$featureId",
   });
 
-  console.log(user);
   const { mutate } = useMutation({
     mutationFn: async (vote: { featureId: string; value: "up" | "down" }) => {
       await fetch(`/api/votes`, {
@@ -129,6 +127,33 @@ function RouteComponent() {
       });
     },
   });
+  const { mutate: mutateComment, isPending: commentIsPending } = useMutation({
+    mutationFn: async (comment: { featureId: string; content: string }) => {
+      await fetch(`/api/comments`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(comment),
+      });
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ["getFeature", featureId],
+      });
+      form.reset();
+    },
+  });
+
+  const form = useForm({
+    defaultValues: {
+      content: "",
+    },
+    onSubmit: ({ value }) => {
+      mutateComment({ featureId, content: value.content });
+    },
+  });
 
   return (
     <Dialog onClose={() => navigate({ to: "/dashboard" })}>
@@ -161,7 +186,81 @@ function RouteComponent() {
             <p>{feature.description}</p>
           </div>
         </div>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            form.handleSubmit();
+          }}
+        >
+          <form.Field
+            validators={{ onChange: createCommentSchema.shape.content }}
+            name="content"
+            children={(field) => {
+              return (
+                <>
+                  <label>
+                    Commentaire
+                    <textarea
+                      id={field.name}
+                      name={field.name}
+                      value={field.state.value}
+                      className="placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex h-9 w-full min-w-0 rounded border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm
+        focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]
+        aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive"
+                      onBlur={field.handleBlur}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                    />
+                  </label>
+                  {field.state.meta.errors[0]?.message && (
+                    <ErrorMessage
+                      message={field.state.meta.errors[0].message}
+                    />
+                  )}
+                </>
+              );
+            }}
+          />
+
+          <form.Subscribe
+            selector={(state) => [state.canSubmit, state.isSubmitting]}
+            children={([canSubmit, isSubmitting]) => (
+              <div className="flex gap-2">
+                <Button
+                  type="submit"
+                  disabled={!canSubmit || commentIsPending}
+                  className="flex-1"
+                >
+                  {isSubmitting ? "..." : "Envoyer"}
+                </Button>
+              </div>
+            )}
+          />
+        </form>
+        {!!feature.comments &&
+          feature.comments.map((comment) => <CommentItem comment={comment} />)}
       </HeadingLevel>
     </Dialog>
   );
 }
+
+const CommentItem = ({ comment }: { comment: any }) => {
+  return (
+    <div className="ml-4 mt-4 border-l pl-4">
+      <div className="text-sm text-gray-800">
+        <strong>{comment.user?.email || "User"}</strong> – {comment.content}
+      </div>
+      <div className="text-xs text-gray-500">
+        {new Date(comment.createdAt).toLocaleString("fr-FR")}
+      </div>
+
+      {comment.children && comment.children.length > 0 && (
+        <div className="mt-2">
+          {comment.children.map((child) => (
+            <CommentItem key={child.id} comment={child} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};

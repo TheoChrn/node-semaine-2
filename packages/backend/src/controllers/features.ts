@@ -1,3 +1,4 @@
+import { userRolesValues } from "@/db/schemas/users";
 import { models } from "@/models/index";
 import { logger } from "@/utils/logger";
 import { APIResponse } from "@/utils/response";
@@ -7,7 +8,6 @@ import {
   validateIdSchema,
 } from "@monorepo/shared/src/validators";
 import type { Request, Response } from "express";
-import { z } from "zod";
 
 export const feature = {
   get: async (request: Request, response: Response) => {
@@ -77,7 +77,16 @@ export const feature = {
     logger.info("[POST] Créer une feature");
     try {
       const { description, title } = request.body;
-      const { id } = response.locals.user;
+      const { id, role } = response.locals.user;
+
+      if (role !== userRolesValues.ADMIN) {
+        APIResponse({
+          response,
+          message: "Unauthorized",
+          status: 401,
+        });
+        return;
+      }
 
       const input = {
         description,
@@ -90,7 +99,6 @@ export const feature = {
       if (validation.error) {
         APIResponse({
           response,
-
           message: validation.error.message,
           status: 400,
         });
@@ -115,6 +123,16 @@ export const feature = {
     logger.info("[DELETE] Supprimer une feature");
     try {
       const { id } = request.params;
+      const { role } = response.locals.user;
+
+      if (role !== userRolesValues.ADMIN) {
+        APIResponse({
+          response,
+          message: "Unauthorized",
+          status: 401,
+        });
+        return;
+      }
 
       const validation = validateIdSchema.safeParse(id);
 
@@ -151,7 +169,16 @@ export const feature = {
     try {
       const { id } = request.params;
       const { description, title } = request.body;
-      const { user } = response.locals;
+      const { user, role } = response.locals;
+
+      if (role !== userRolesValues.ADMIN) {
+        APIResponse({
+          response,
+          message: "Unauthorized",
+          status: 401,
+        });
+        return;
+      }
 
       const input = {
         id: id!,
