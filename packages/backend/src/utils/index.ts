@@ -7,28 +7,32 @@ export const groupBy = <T, K extends keyof any>(arr: T[], key: (i: T) => K) =>
     {} as Record<K, T[]>
   );
 
-export const nestComments = (comments: any[]) => {
-  const map = new Map<string, any>();
-  const roots: any[] = [];
+type WithIdParentId<TId = string> = {
+  id: TId;
+  parentId?: TId | null;
+};
+
+export function nestComments(comments: CommentBase[]): CommentWithChildren[] {
+  const map = new Map<string, CommentWithChildren>();
+  const roots: CommentWithChildren[] = [];
 
   for (const comment of comments) {
     map.set(comment.id, { ...comment, children: [] });
   }
 
   for (const comment of comments) {
-    console.log(comment);
     if (comment.parentId) {
       const parent = map.get(comment.parentId);
       if (parent) {
-        parent.children.push(map.get(comment.id));
+        parent.children.push(map.get(comment.id)!);
       }
     } else {
-      roots.push(map.get(comment.id));
+      roots.push(map.get(comment.id)!);
     }
   }
 
   return roots;
-};
+}
 
 export class NotFoundError extends Error {
   status: number;

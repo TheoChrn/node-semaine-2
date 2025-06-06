@@ -3,8 +3,6 @@ import { useQuery } from "@tanstack/react-query";
 import * as React from "react";
 
 export interface AuthContext {
-  //   login: (email: string) => Promise<void>;
-  //   logout: () => Promise<void>;
   user: {
     id: string;
     email: string;

@@ -13,7 +13,7 @@ import { ChevronDown, ChevronUp, MessagesSquare, Plus } from "lucide-react";
 const geAllFeaturesQueryOptions = () =>
   queryOptions({
     queryKey: ["getAllFeatures"],
-    queryFn: async () => {
+    queryFn: async (): Promise<Features | null> => {
       try {
         const res = await fetch("/api/features", {
           method: "GET",
@@ -60,7 +60,7 @@ function RouteComponent() {
 
   const { data } = useSuspenseQuery(geAllFeaturesQueryOptions());
 
-  if ((Array.isArray(data) && !data.length) || !Object.entries(data).length) {
+  if (!data || Object.values(data).every((arr) => arr.length === 0)) {
     return (
       <div>
         {user.role === "admin" ? (

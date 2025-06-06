@@ -69,7 +69,7 @@ export const feature = {
       })
       .then((row) => ({
         ...row,
-        comments: row?.comments ? nestComments(row.comments) : [],
+        comments: row?.comments ? nestComments(row.comments) : null,
       }));
 
     if (!feature) {
@@ -78,13 +78,25 @@ export const feature = {
 
     const { votes, ...restFeature } = feature;
 
-    return {
+    const x = {
       ...restFeature,
       votes: {
         users: votes?.map(({ userId }) => userId) ?? [],
         userValue: votes?.find((val) => val.userId === input.userId)?.value,
         upCount: votes?.filter(({ value }) => value === "up").length,
         downCount: votes?.filter(({ value }) => value === "down").length,
+      },
+    };
+
+    type b = typeof x;
+
+    return {
+      ...restFeature,
+      votes: {
+        users: votes?.map(({ userId }) => userId) ?? [],
+        userValue: votes?.find((val) => val.userId === input.userId)?.value,
+        upCount: votes?.filter(({ value }) => value === "up").length ?? 0,
+        downCount: votes?.filter(({ value }) => value === "down").length ?? 0,
       },
     };
   },

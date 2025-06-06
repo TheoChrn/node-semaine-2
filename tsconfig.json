@@ -1,6 +1,7 @@
 {
   "extends": "@total-typescript/tsconfig/bundler/dom/app",
   "compilerOptions": {
+    "noErrorTruncation": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "target": "es2022",

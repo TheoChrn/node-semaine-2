@@ -77,7 +77,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     }
 
     return {
-      auth: user,
+      auth: user as AuthContext["user"],
     };
   },
   loader: ({ context }) => {

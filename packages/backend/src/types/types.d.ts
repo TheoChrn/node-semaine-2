@@ -26,4 +26,28 @@ declare global {
     DATABASE_URL: string;
     JWT_SECRET: string;
   }
+
+  type CommentBase = {
+    id: string;
+    createdAt: Date;
+    content: string;
+    parentId: string | null;
+    user: {
+      email: string;
+    };
+    parent: {
+      createdAt: Date;
+      content: string;
+      authorId: string;
+      user: {
+        email: string;
+      };
+    } | null;
+  };
+
+  type CommentWithChildren = CommentBase & {
+    children: CommentWithChildren[];
+  };
+
+  type Comments = CommentWithChildren[] | null;
 }

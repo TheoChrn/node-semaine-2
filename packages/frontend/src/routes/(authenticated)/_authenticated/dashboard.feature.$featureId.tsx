@@ -10,17 +10,13 @@ import {
   useQueryClient,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import {
-  createFileRoute,
-  useLoaderData,
-  useNavigate,
-} from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Triangle } from "lucide-react";
 
 const getFeature = (featureId: string) =>
   queryOptions({
     queryKey: ["getFeature", featureId],
-    queryFn: async () => {
+    queryFn: async (): Promise<Feature | null> => {
       try {
         const res = await fetch(`/api/features/${featureId}`, {
           method: "GET",
@@ -61,9 +57,6 @@ function RouteComponent() {
   const queryClient = useQueryClient();
   const { featureId } = Route.useParams();
   const { data: feature } = useSuspenseQuery(getFeature(featureId));
-  const { user } = useLoaderData({
-    from: "/(authenticated)/_authenticated/dashboard/feature/$featureId",
-  });
 
   const { mutate } = useMutation({
     mutationFn: async (vote: { featureId: string; value: "up" | "down" }) => {
@@ -86,30 +79,33 @@ function RouteComponent() {
         vote.featureId,
       ]);
 
-      queryClient.setQueryData(["getFeature", vote.featureId], (old: any) => {
-        if (!old) return old;
+      queryClient.setQueryData(
+        ["getFeature", vote.featureId],
+        (old: Feature) => {
+          if (!old) return old;
 
-        let newUp = old.votes.upCount;
-        let newDown = old.votes.downCount;
+          let newUp = old.votes.upCount;
+          let newDown = old.votes.downCount;
 
-        if (vote.value === "up") {
-          if (old.votes.userValue === "down") newDown--;
-          newUp++;
-        } else {
-          if (old.votes.userValue === "up") newUp--;
-          newDown++;
+          if (vote.value === "up") {
+            if (old.votes.userValue === "down") newDown--;
+            newUp++;
+          } else {
+            if (old.votes.userValue === "up") newUp--;
+            newDown++;
+          }
+
+          return {
+            ...old,
+            votes: {
+              ...old.votes,
+              userValue: vote.value,
+              upCount: newUp,
+              downCount: newDown,
+            },
+          };
         }
-
-        return {
-          ...old,
-          votes: {
-            ...old.votes,
-            userValue: vote.value,
-            upCount: newUp,
-            downCount: newDown,
-          },
-        };
-      });
+      );
 
       return { previousData };
     },
@@ -154,6 +150,11 @@ function RouteComponent() {
       mutateComment({ featureId, content: value.content });
     },
   });
+
+  if (!feature) {
+    navigate({ to: "/dashboard" });
+    return;
+  }
 
   return (
     <Dialog onClose={() => navigate({ to: "/dashboard" })}>
@@ -244,7 +245,7 @@ function RouteComponent() {
   );
 }
 
-const CommentItem = ({ comment }: { comment: any }) => {
+const CommentItem = ({ comment }: { comment: CommentWithChildren }) => {
   return (
     <div className="ml-4 mt-4 border-l pl-4">
       <div className="text-sm text-gray-800">
